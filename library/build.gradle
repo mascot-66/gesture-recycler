@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+def version = '1.0.0'
+
+ext {
+    PUBLISH_GROUP_ID = 'com.thesurix.gesturerecycler'
+    PUBLISH_ARTIFACT_ID = 'gesture-recycler'
+    PUBLISH_VERSION = version
+}
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName version
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile supportDependencies.recyclerView
+    compile supportDependencies.appCompat
+}
+
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

@@ -1,1 +1,102 @@
-# gesture-recycler
+# Gesture Recycler
+This library provides swipe & drag and drop support for RecyclerView. Based on great example from [Android-ItemTouchHelper-Demo](https://github.com/iPaulPro/Android-ItemTouchHelper-Demo).
+
+# Demo
+![](http://i.giphy.com/xT9DPGkRUkPiH3Qum4.gif)
+
+# Features
+* swipe 
+* long press drag
+* manual mode drag
+* support for different layout managers
+* predefined drag & swipe flags for RecyclerView's layout managers 
+
+# How to use?
+
+Define your RecyclerView and adapter as usually:
+```java
+final LinearLayoutManager manager = new LinearLayoutManager(getContext());
+recyclerView.setHasFixedSize(true);
+recyclerView.setLayoutManager(manager);
+
+// Extend GestureAdapter and write your own
+// ViewHolder items must extend GestureViewHolder
+final MonthsAdapter adapter = new MonthsAdapter(getContext(), R.layout.linear_item);
+adapter.setData(getMonths());
+recyclerView.setAdapter(adapter);
+```
+To enable swipe/drag and drop support:
+```java
+final GestureTouchHelperCallback touchHelperCallback = new GestureTouchHelperCallback(adapter);
+// Enable swipe
+touchHelperCallback.setSwipeEnabled(true);
+// Enable long press drag and drop 
+touchHelperCallback.setLongPressDragEnabled(true);
+
+// Sets predefined swipe & drag and drop flags based on layout manager type
+touchHelperCallback.setGestureFlagsForLayout(manager);
+
+//or use your own
+touchHelperCallback.setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN);
+touchHelperCallback.setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+
+final ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
+touchHelper.attachToRecyclerView(recyclerView); 
+```
+
+To enable manual drag:
+```java
+// Enable manual drag, you need to provide View inside your ViewHolder
+touchHelperCallback.setManualDragEnabled(true);
+// Attach default listener for drag triggering
+adapter.setGestureListener(new GestureListener(touchHelper));
+```
+
+Any callbacks? Sure:
+```java
+adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
+            @Override
+            public void onItemRemoved(final MonthItem item, final int position) {
+            }
+
+            @Override
+            public void onItemReorder(final MonthItem item, final int fromPos, final int toPos) {
+            }
+        });
+```
+To support all animations use GestureAdapter interface:
+```java
+// Support for data animations
+adapter.add(month);
+adapter.insert(month, 5);
+adapter.remove(5);
+
+// This will interrupt pending animations
+adapter.setData(months)
+```
+
+# Help
+See examples.
+
+# To do
+* item click listener
+* empty view?
+* tests?
+
+# Licence
+
+```
+Copyright 2016 thesurix
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
