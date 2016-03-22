@@ -9,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 /**
  * Enum with predefined gesture flags for various layout managers, see {@link RecyclerView.LayoutManager}
+ * @author thesurix
  */
 enum LayoutFlags {
 

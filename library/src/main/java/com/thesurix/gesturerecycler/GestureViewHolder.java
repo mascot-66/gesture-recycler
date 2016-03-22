@@ -6,6 +6,7 @@ import android.view.View;
 
 /**
  * Base view holder class for gesture compatible items.
+ * @author thesurix
  */
 public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
 

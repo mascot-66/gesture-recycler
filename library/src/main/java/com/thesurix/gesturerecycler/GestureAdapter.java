@@ -53,7 +53,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     /** Stop position of the drag action */
     private int mStopDragPos = INVALID_DRAG_POS;
     /** Flag that defines if adapter allows manual dragging */
-    private boolean mIsManualDragAllowed = true;
+    private boolean mIsManualDragAllowed;
 
     private OnGestureListener mGestureListener;
     private OnDataChangeListener<T> mDataChangeListener;

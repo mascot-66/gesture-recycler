@@ -29,7 +29,7 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
     /** Flags for drag gesture */
     private int mDragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
     /** Flags for swipe gesture */
-    private int mSwipeFlags = ItemTouchHelper.END;
+    private int mSwipeFlags = ItemTouchHelper.RIGHT;
 
     /**
      * Constructs callback object based on passed adapter.
@@ -37,7 +37,6 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
      */
     public GestureTouchHelperCallback(final GestureAdapter adapter) {
         mGestureAdapter = adapter;
-        mGestureAdapter.allowManualDrag(mIsManualDragEnabled);
     }
 
     @Override
@@ -60,7 +59,6 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onSelectedChanged(final RecyclerView.ViewHolder viewHolder, final int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-            //Lock adapter when gesture starts
             if (viewHolder instanceof GestureViewHolder) {
                 final GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
                 itemViewHolder.onItemSelect();
@@ -71,7 +69,6 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void clearView(final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
-        //Unlock adapter when gesture ends
         mGestureAdapter.onItemMoved();
         if (viewHolder instanceof GestureViewHolder) {
             final GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
