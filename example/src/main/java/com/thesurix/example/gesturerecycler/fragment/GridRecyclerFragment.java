@@ -3,8 +3,10 @@ package com.thesurix.example.gesturerecycler.fragment;
 import com.thesurix.example.gesturerecycler.R;
 import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
+import com.thesurix.gesturerecycler.DefaultItemClickListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
+import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -28,6 +30,24 @@ public class GridRecyclerFragment extends BaseFragment {
         final MonthsAdapter adapter = new MonthsAdapter(getContext(), R.layout.grid_item);
         adapter.setData(getMonths());
         mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemTouchListener(getActivity(), new DefaultItemClickListener() {
+            @Override
+            public boolean onItemClick(final View view, final int position) {
+                Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                return true;
+            }
+
+            @Override
+            public void onItemLongPress(final View view, final int position) {
+                Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public boolean onDoubleTap(final View view, final int position) {
+                Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
+                return true;
+            }
+        }));
 
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
