@@ -2,5 +2,12 @@
     <string name="app_name">Gesture Recycler</string>
 
     <string name="linear_recycler_text">Linear Recycler</string>
+    <string name="linear_empty_text">Linear Empty View</string>
     <string name="grid_recycler_text">Grid Recycler</string>
+    <string name="recycler_no_data_text">No data</string>
+
+    <!-- Menu -->
+    <string name="menu_drag_on_off">Enable/Disable drag</string>
+    <string name="menu_add_data">Add data</string>
+    <string name="menu_clear_data">Clear data</string>
 </resources>

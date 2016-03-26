@@ -17,8 +17,6 @@ import android.view.View;
 
 public class GridRecyclerFragment extends BaseFragment {
 
-    private GestureManager mGestureManager;
-
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

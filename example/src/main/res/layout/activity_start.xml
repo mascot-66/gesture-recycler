@@ -30,6 +30,12 @@
         android:text="@string/linear_recycler_text"/>
 
     <Button
+        android:id="@+id/start_empty_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_btn_height"
+        android:text="@string/linear_empty_text"/>
+
+    <Button
         android:id="@+id/start_grid_btn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_btn_height"

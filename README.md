@@ -15,6 +15,8 @@ This library provides swipe & drag and drop support for RecyclerView. Based on g
 * manual mode drag
 * support for different layout managers
 * predefined drag & swipe flags for RecyclerView's layout managers
+* item click/long press/double tap listener
+* empty view
 
 # Dependency
 
@@ -28,8 +30,8 @@ dependencies {
 
 # How to use?
 
-Define your RecyclerView and adapter as usually:
 ```java
+// Define your RecyclerView and adapter as usually
 final LinearLayoutManager manager = new LinearLayoutManager(getContext());
 recyclerView.setHasFixedSize(true);
 recyclerView.setLayoutManager(manager);
@@ -40,7 +42,7 @@ final MonthsAdapter adapter = new MonthsAdapter(getContext(), R.layout.linear_it
 adapter.setData(getMonths());
 recyclerView.setAdapter(adapter);
 ```
-To enable swipe/drag and drop support:
+### Swipe and drag & drop support:
 ```java
 GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
                  // Enable swipe
@@ -55,7 +57,7 @@ GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
                 .build();
 ```
 
-Any callbacks? Sure:
+### Data callbacks:
 ```java
 adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
             @Override
@@ -67,7 +69,7 @@ adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>
             }
         });
 ```
-To support all animations use GestureAdapter interface:
+### Data animations:
 ```java
 // Support for data animations
 adapter.add(month);
@@ -77,6 +79,56 @@ adapter.remove(5);
 // This will interrupt pending animations
 adapter.setData(months)
 ```
+### Item click events:
+
+```java
+// Attach DefaultItemClickListener or implement RecyclerItemTouchListener.ItemClickListener
+recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener(getActivity(), new DefaultItemClickListener() {
+            @Override
+            public boolean onItemClick(final View view, final int position) {
+                // return true if the event is consumed
+                return false;
+            }
+
+            @Override
+            public void onItemLongPress(final View view, final int position) {
+            }
+
+            @Override
+            public boolean onDoubleTap(final View view, final int position) {
+                // return true if the event is consumed
+                return false;
+            }
+        }));
+```
+### Empty view:
+```xml
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <!-- Define your empty view in layout -->
+    <TextView
+        android:id="@+id/empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:text="No data"/>
+</FrameLayout>
+```
+```java
+// Pass null to disable empty view
+final View emptyView = view.findViewById(R.id.empty_view);
+adapter.setEmptyView(emptyView);
+```
+
+
 ## Old way (v1.0.0):
 To enable swipe/drag and drop support:
 ```java
@@ -107,9 +159,8 @@ adapter.setGestureListener(new GestureListener(touchHelper));
 See examples.
 
 # To do
-* item click listener
+* background view for swipeable items
 * undo?
-* empty view?
 * tests?
 
 # Licence
@@ -129,3 +180,4 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+

@@ -25,4 +25,9 @@ public class StartActivity extends AppCompatActivity {
     public void startLinearRecycler() {
         startActivity(RecyclerActivity.getIntent(this, RecyclerActivity.RecyclerOption.LINEAR));
     }
+
+    @OnClick(R.id.start_empty_btn)
+    public void startLinearEmptyRecycler() {
+        startActivity(RecyclerActivity.getIntent(this, RecyclerActivity.RecyclerOption.EMPTY));
+    }
 }

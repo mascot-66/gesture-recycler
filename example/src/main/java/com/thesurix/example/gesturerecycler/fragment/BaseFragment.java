@@ -4,6 +4,7 @@ import com.thesurix.example.gesturerecycler.R;
 import com.thesurix.example.gesturerecycler.model.Month;
 import com.thesurix.example.gesturerecycler.model.MonthHeader;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
+import com.thesurix.gesturerecycler.GestureManager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import java.util.List;
 public class BaseFragment extends Fragment {
 
     protected RecyclerView mRecyclerView;
+    protected GestureManager mGestureManager;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {

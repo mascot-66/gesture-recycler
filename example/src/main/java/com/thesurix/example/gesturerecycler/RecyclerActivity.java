@@ -1,5 +1,6 @@
 package com.thesurix.example.gesturerecycler;
 
+import com.thesurix.example.gesturerecycler.fragment.EmptyViewFragment;
 import com.thesurix.example.gesturerecycler.fragment.GridRecyclerFragment;
 import com.thesurix.example.gesturerecycler.fragment.LinearRecyclerFragment;
 
@@ -14,7 +15,7 @@ public class RecyclerActivity extends AppCompatActivity {
     private static final String EXTRA_RECYCLER_OPTION = "recycler_option";
 
     public enum RecyclerOption {
-        LINEAR, GRID
+        LINEAR, GRID, EMPTY
     }
 
     public static Intent getIntent(final Context ctx, final RecyclerOption option) {
@@ -34,6 +35,8 @@ public class RecyclerActivity extends AppCompatActivity {
         final Fragment fragment;
         if (option == RecyclerOption.GRID.ordinal()) {
             fragment = new GridRecyclerFragment();
+        } else if (option == RecyclerOption.EMPTY.ordinal()) {
+            fragment = new EmptyViewFragment();
         } else {
             fragment = new LinearRecyclerFragment();
         }

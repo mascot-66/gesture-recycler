@@ -57,9 +57,21 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
 
     private OnGestureListener mGestureListener;
     private OnDataChangeListener<T> mDataChangeListener;
+    private final EmptyViewDataObserver mEmptyViewDataObserver = new EmptyViewDataObserver();
+    private final View.OnAttachStateChangeListener mAttachListener = new View.OnAttachStateChangeListener() {
+        @Override
+        public void onViewAttachedToWindow(final View v) {
+            registerAdapterDataObserver(mEmptyViewDataObserver);
+        }
+
+        @Override
+        public void onViewDetachedFromWindow(final View v) {
+            unregisterAdapterDataObserver(mEmptyViewDataObserver);
+        }
+    };
 
     /** Collection for adapter's data */
-    private final  List<T> mData = new ArrayList<>();
+    private final List<T> mData = new ArrayList<>();
 
     @Override
     public void onBindViewHolder(final K holder, final int position) {
@@ -89,6 +101,24 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
         return mData.size();
     }
 
+    @Override
+    public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mEmptyViewDataObserver.setRecyclerView(recyclerView);
+        if (recyclerView.isAttachedToWindow()) {
+            registerAdapterDataObserver(mEmptyViewDataObserver);
+        }
+        recyclerView.addOnAttachStateChangeListener(mAttachListener);
+    }
+
+    @Override
+    public void onDetachedFromRecyclerView(final RecyclerView recyclerView) {
+        super.onDetachedFromRecyclerView(recyclerView);
+        mEmptyViewDataObserver.setRecyclerView(null);
+        unregisterAdapterDataObserver(mEmptyViewDataObserver);
+        recyclerView.removeOnAttachStateChangeListener(mAttachListener);
+    }
+
     /**
      * Sets adapter data. This method will interrupt pending animations.
      * Use add(), remove() or insert() to achieve smooth animations.
@@ -97,6 +127,14 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     public void setData(final List<T> data) {
         mData.clear();
         mData.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Clears data.
+     */
+    public void clearData() {
+        mData.clear();
         notifyDataSetChanged();
     }
 
@@ -145,6 +183,15 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     public void insert(final T item, final int position) {
         mData.add(position, item);
         notifyItemInserted(position);
+    }
+
+    /**
+     * Sets empty view. Empty view is used when adapter has no data.
+     * Pass null to disable empty view feature.
+     * @param emptyView view to show
+     */
+    public void setEmptyView(final View emptyView) {
+        mEmptyViewDataObserver.setEmptyView(emptyView);
     }
 
     /**

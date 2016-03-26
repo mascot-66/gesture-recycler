@@ -18,7 +18,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecyclerActivity"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".StartActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".StartActivity" />
         </activity>
     </application>
 

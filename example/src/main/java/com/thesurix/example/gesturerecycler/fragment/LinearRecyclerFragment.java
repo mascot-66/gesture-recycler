@@ -18,8 +18,6 @@ import android.view.View;
 
 public class LinearRecyclerFragment extends BaseFragment {
 
-    private GestureManager mGestureManager;
-
     @Override
     public void onViewCreated(final View view, @Nullable final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -30,6 +28,7 @@ public class LinearRecyclerFragment extends BaseFragment {
 
         final MonthsAdapter adapter = new MonthsAdapter(getContext(), R.layout.linear_item);
         adapter.setData(getMonths());
+
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addOnItemTouchListener(new RecyclerItemTouchListener(getActivity(), new DefaultItemClickListener() {
             @Override
