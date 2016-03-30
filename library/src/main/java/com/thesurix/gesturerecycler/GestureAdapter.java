@@ -257,7 +257,9 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
      */
     void onItemMoved() {
         if (mSwappedItem != null && mStopDragPos != INVALID_DRAG_POS) {
-            mDataChangeListener.onItemReorder(mSwappedItem, mStartDragPos, mStopDragPos);
+            if (mDataChangeListener != null) {
+                mDataChangeListener.onItemReorder(mSwappedItem, mStartDragPos, mStopDragPos);
+            }
             mSwappedItem = null;
             mStopDragPos = INVALID_DRAG_POS;
         }
