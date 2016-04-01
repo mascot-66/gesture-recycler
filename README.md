@@ -10,13 +10,13 @@ This library provides swipe & drag and drop support for RecyclerView. Based on g
 ![](http://i.giphy.com/xT9DPGkRUkPiH3Qum4.gif)
 
 # Features
+* item click/long press/double tap listener
+* empty view
 * swipe 
 * long press drag
 * manual mode drag
 * support for different layout managers
 * predefined drag & swipe flags for RecyclerView's layout managers
-* item click/long press/double tap listener
-* empty view
 
 # Dependency
 
@@ -24,7 +24,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.1.0'
+    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.2.0'
 }
 ```
 
