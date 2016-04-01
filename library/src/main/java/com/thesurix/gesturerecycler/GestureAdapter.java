@@ -105,9 +105,6 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     public void onAttachedToRecyclerView(final RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
         mEmptyViewDataObserver.setRecyclerView(recyclerView);
-        if (recyclerView.isAttachedToWindow()) {
-            registerAdapterDataObserver(mEmptyViewDataObserver);
-        }
         recyclerView.addOnAttachStateChangeListener(mAttachListener);
     }
 
@@ -115,7 +112,6 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     public void onDetachedFromRecyclerView(final RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
         mEmptyViewDataObserver.setRecyclerView(null);
-        unregisterAdapterDataObserver(mEmptyViewDataObserver);
         recyclerView.removeOnAttachStateChangeListener(mAttachListener);
     }
 

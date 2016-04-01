@@ -68,6 +68,7 @@ public class EmptyViewFragment extends BaseFragment {
                 final List<MonthItem> months = getMonths();
                 final int month = (int)(Math.random() * months.size());
                 mAdapter.insert(months.get(month), 0);
+                mRecyclerView.scrollToPosition(0);
                 break;
         }
         return super.onOptionsItemSelected(item);
