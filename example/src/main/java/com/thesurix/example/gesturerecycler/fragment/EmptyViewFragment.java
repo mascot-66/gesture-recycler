@@ -4,10 +4,12 @@ import com.thesurix.example.gesturerecycler.R;
 import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
 import com.thesurix.example.gesturerecycler.model.Month;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
+import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -41,6 +43,31 @@ public class EmptyViewFragment extends BaseFragment {
 
         mAdapter = new MonthsAdapter(getContext(), R.layout.linear_item);
         mAdapter.setData(getMonths());
+        mAdapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
+            @Override
+            public void onItemRemoved(final MonthItem item, final int position) {
+                final Snackbar undoSnack = Snackbar.make(view, "Month removed from position " + position, Snackbar.LENGTH_SHORT);
+                undoSnack.setAction(R.string.undo_text, new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        mAdapter.undoLast();
+                    }
+                });
+                undoSnack.show();
+            }
+
+            @Override
+            public void onItemReorder(final MonthItem item, final int fromPos, final int toPos) {
+                final Snackbar undoSnack = Snackbar.make(view, "Month moved from position " + fromPos + " to " + toPos, Snackbar.LENGTH_SHORT);
+                undoSnack.setAction(R.string.undo_text, new View.OnClickListener() {
+                    @Override
+                    public void onClick(final View v) {
+                        mAdapter.undoLast();
+                    }
+                });
+                undoSnack.show();
+            }
+        });
 
         final View emptyView = view.findViewById(R.id.empty_root);
         mAdapter.setEmptyView(emptyView);

@@ -5,6 +5,7 @@
     <string name="linear_empty_text">Linear Empty View</string>
     <string name="grid_recycler_text">Grid Recycler</string>
     <string name="recycler_no_data_text">No data</string>
+    <string name="undo_text">Undo</string>
 
     <!-- Menu -->
     <string name="menu_drag_on_off">Enable/Disable drag</string>
