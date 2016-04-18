@@ -12,6 +12,7 @@ This library provides swipe & drag and drop support for RecyclerView. Based on g
 # Features
 * item click/long press/double tap listener
 * empty view
+* undo
 * swipe 
 * long press drag
 * manual mode drag
@@ -24,7 +25,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.2.0'
+    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.3.0'
 }
 ```
 
@@ -127,7 +128,14 @@ recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener(getActivity(),
 final View emptyView = view.findViewById(R.id.empty_view);
 adapter.setEmptyView(emptyView);
 ```
+### Undo:
+```java
+// Undo last data transaction (add, insert, remove, swipe, reorder)
+adapter.undoLast();
 
+// Set undo stack size
+adapter.setUndoSize(2);
+```
 
 ## Old way (v1.0.0):
 To enable swipe/drag and drop support:
@@ -160,7 +168,6 @@ See examples.
 
 # To do
 * background view for swipeable items
-* undo?
 * tests?
 
 # Licence
