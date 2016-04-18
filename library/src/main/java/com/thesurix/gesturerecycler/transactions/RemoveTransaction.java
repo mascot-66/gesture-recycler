@@ -4,6 +4,9 @@ package com.thesurix.gesturerecycler.transactions;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureViewHolder;
 
+/**
+ * @author thesurix
+ */
 public class RemoveTransaction<T> implements AdapterTransaction {
 
     private final GestureAdapter<T, ? extends GestureViewHolder> mAdapter;

@@ -43,6 +43,7 @@ public class EmptyViewFragment extends BaseFragment {
 
         mAdapter = new MonthsAdapter(getContext(), R.layout.linear_item);
         mAdapter.setData(getMonths());
+        mAdapter.setUndoSize(2);
         mAdapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
             @Override
             public void onItemRemoved(final MonthItem item, final int position) {
@@ -88,6 +89,9 @@ public class EmptyViewFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.recycler_undo_menu:
+                mAdapter.undoLast();
+                break;
             case R.id.recycler_clear_menu:
                 mAdapter.clearData();
                 break;
