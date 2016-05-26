@@ -1,10 +1,10 @@
 package com.thesurix.gesturerecycler;
 
+import com.thesurix.gesturerecycler.transactions.AdapterTransaction;
 import com.thesurix.gesturerecycler.transactions.AddTransaction;
 import com.thesurix.gesturerecycler.transactions.InsertTransaction;
 import com.thesurix.gesturerecycler.transactions.RemoveTransaction;
 import com.thesurix.gesturerecycler.transactions.RevertReorderTransaction;
-import com.thesurix.gesturerecycler.transactions.AdapterTransaction;
 import com.thesurix.gesturerecycler.util.FixedSizeArrayDequeue;
 
 import android.support.v4.view.MotionEventCompat;
@@ -12,13 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
 
 /**
  * Base adapter for gesture recognition, extends this to provide own implementation. T is the data type, K is the ViewHolder type.
@@ -72,14 +69,23 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     private OnDataChangeListener<T> mDataChangeListener;
     private final EmptyViewDataObserver mEmptyViewDataObserver = new EmptyViewDataObserver();
     private final View.OnAttachStateChangeListener mAttachListener = new View.OnAttachStateChangeListener() {
+
+        private boolean isRegistered;
+
         @Override
         public void onViewAttachedToWindow(final View v) {
-            registerAdapterDataObserver(mEmptyViewDataObserver);
+            if (!isRegistered) {
+                isRegistered = true;
+                registerAdapterDataObserver(mEmptyViewDataObserver);
+            }
         }
 
         @Override
         public void onViewDetachedFromWindow(final View v) {
-            unregisterAdapterDataObserver(mEmptyViewDataObserver);
+            if (isRegistered) {
+                isRegistered = false;
+                unregisterAdapterDataObserver(mEmptyViewDataObserver);
+            }
             resetTransactions();
         }
     };

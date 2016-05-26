@@ -28,12 +28,12 @@ class EmptyViewDataObserver extends RecyclerView.AdapterDataObserver {
 
     public void setEmptyView(final View emptyView) {
         mEmptyView = emptyView;
-        onChanged();
+        updateEmptyViewState();
     }
 
     public void setRecyclerView(final RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
-        onChanged();
+        updateEmptyViewState();
     }
 
     private void updateEmptyViewState() {
