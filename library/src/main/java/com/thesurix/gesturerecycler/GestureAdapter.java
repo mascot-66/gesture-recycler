@@ -138,7 +138,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
 
     /**
      * Sets adapter data. This method will interrupt pending animations.
-     * Use add(), remove() or insert() to achieve smooth animations.
+     * Use {@link #add(T)}, {@link #remove(int)} or {@link #insert(T, int)} to achieve smooth animations.
      * @param data data to show
      */
     public void setData(final List<T> data) {

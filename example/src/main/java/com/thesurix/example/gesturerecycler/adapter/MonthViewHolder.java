@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -18,9 +18,9 @@ public class MonthViewHolder extends GestureViewHolder {
 
     private static final int SELECT_DURATION_IN_MS = 250;
 
-    @Bind(R.id.month_text) TextView mMonthText;
-    @Bind(R.id.month_image) ImageView mMonthPicture;
-    @Bind(R.id.mont_drag) ImageView mItemDrag;
+    @BindView(R.id.month_text) TextView mMonthText;
+    @BindView(R.id.month_image) ImageView mMonthPicture;
+    @BindView(R.id.mont_drag) ImageView mItemDrag;
 
     public MonthViewHolder(final View view) {
         super(view);

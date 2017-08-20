@@ -6,13 +6,13 @@ import com.thesurix.gesturerecycler.GestureViewHolder;
 import android.view.View;
 import android.widget.TextView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class HeaderViewHolder extends GestureViewHolder {
 
-    @Bind(R.id.header_text) TextView mHeaderText;
+    @BindView(R.id.header_text) TextView mHeaderText;
 
     public HeaderViewHolder(final View view) {
         super(view);
