@@ -168,6 +168,15 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     }
 
     /**
+     * Returns item for the given position
+     * @param position item's position
+     * @return item
+     */
+    public T getItem(final int position) {
+        return mData.get(position);
+    }
+
+    /**
      * Adds item to the adapter.
      * @param item item to add
      * @return true if added, false otherwise

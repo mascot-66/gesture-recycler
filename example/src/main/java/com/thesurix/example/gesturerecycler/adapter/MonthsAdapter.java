@@ -39,7 +39,7 @@ public class MonthsAdapter extends GestureAdapter<MonthItem, GestureViewHolder> 
     @Override
     public void onBindViewHolder(final GestureViewHolder holder, final int position) {
         super.onBindViewHolder(holder, position);
-        final MonthItem monthItem = getData().get(position);
+        final MonthItem monthItem = getItem(position);
 
         if (monthItem.getType() == MonthItem.MonthItemType.MONTH) {
             final MonthViewHolder monthViewHolder = (MonthViewHolder) holder;
@@ -56,6 +56,6 @@ public class MonthsAdapter extends GestureAdapter<MonthItem, GestureViewHolder> 
 
     @Override
     public int getItemViewType(final int position) {
-        return getData().get(position).getType().ordinal();
+        return getItem(position).getType().ordinal();
     }
 }

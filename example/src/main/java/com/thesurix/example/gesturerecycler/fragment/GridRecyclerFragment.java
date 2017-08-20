@@ -50,7 +50,7 @@ public class GridRecyclerFragment extends BaseFragment {
         manager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             @Override
             public int getSpanSize(final int position) {
-                final MonthItem item = adapter.getData().get(position);
+                final MonthItem item = adapter.getItem(position);
                 return item.getType() == MonthItem.MonthItemType.HEADER ? manager.getSpanCount() : 1;
             }
         });
