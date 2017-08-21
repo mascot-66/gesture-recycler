@@ -30,20 +30,21 @@ public class LinearRecyclerFragment extends BaseFragment {
         adapter.setData(getMonths());
 
         mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnItemTouchListener(new RecyclerItemTouchListener(getActivity(), new DefaultItemClickListener() {
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<MonthItem>() {
+
             @Override
-            public boolean onItemClick(final View view, final int position) {
+            public boolean onItemClick(final MonthItem item, final int position) {
                 Snackbar.make(view, "Click event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
                 return true;
             }
 
             @Override
-            public void onItemLongPress(final View view, final int position) {
+            public void onItemLongPress(final MonthItem item, final int position) {
                 Snackbar.make(view, "Long press event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
             }
 
             @Override
-            public boolean onDoubleTap(final View view, final int position) {
+            public boolean onDoubleTap(final MonthItem item, final int position) {
                 Snackbar.make(view, "Double tap event on the " + position + " position", Snackbar.LENGTH_SHORT).show();
                 return true;
             }

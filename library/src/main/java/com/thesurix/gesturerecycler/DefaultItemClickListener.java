@@ -1,24 +1,23 @@
 package com.thesurix.gesturerecycler;
 
-import android.view.View;
-
 /**
  * Default implementation of the {@link RecyclerItemTouchListener.ItemClickListener}.
  * @author thesurix
  */
-public class DefaultItemClickListener implements RecyclerItemTouchListener.ItemClickListener {
+public class DefaultItemClickListener<T> implements RecyclerItemTouchListener.ItemClickListener<T> {
 
     @Override
-    public boolean onItemClick(final View view, final int position) {
+    public boolean onItemClick(final T item, final int position) {
         return false;
     }
 
     @Override
-    public void onItemLongPress(final View view, final int position) {
+    public void onItemLongPress(final T item, final int position) {
+
     }
 
     @Override
-    public boolean onDoubleTap(final View view, final int position) {
+    public boolean onDoubleTap(final T item, final int position) {
         return false;
     }
 }

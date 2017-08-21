@@ -11,91 +11,101 @@ import android.view.View;
  * Class that is responsible for handling item touch events.
  * @author thesurix
  */
-public class RecyclerItemTouchListener extends RecyclerView.SimpleOnItemTouchListener {
+public class RecyclerItemTouchListener<T> extends RecyclerView.SimpleOnItemTouchListener {
 
     /**
      * The listener that is used to notify when a tap, long press or double tap occur.
      */
-    public interface ItemClickListener {
+    public interface ItemClickListener<T> {
 
         /**
          * Called when a tap occurs on a specified item.
-         * @param view pressed view
+         * @param item pressed item
          * @param position item's position
          * @return true if the event is consumed, else false
          */
-        boolean onItemClick(View view, int position);
+        boolean onItemClick(T item, int position);
 
         /**
          * Called when a long press occurs on a specified item.
-         * @param view pressed view
+         * @param item pressed item
          * @param position item's position
          */
-        void onItemLongPress(View view, int position);
+        void onItemLongPress(T item, int position);
 
         /**
          * Called when a double tap occurs on a specified item.
-         * @param view tapped view
+         * @param item tapped item
          * @param position item's position
          * @return true if the event is consumed, else false
          */
-        boolean onDoubleTap(View view, int position);
+        boolean onDoubleTap(T item, int position);
     }
 
-    private final GestureDetector mGestureDetector;
-    private final GestureClickListener mGestureClickListener;
+    private GestureDetector mGestureDetector;
+    private final GestureClickListener<T> mGestureClickListener;
 
     /**
      * Constructs {@link RecyclerView} touch listener.
-     * @param ctx context
      * @param listener listener for item's click events
      */
-    public RecyclerItemTouchListener(@NonNull final Context ctx, @NonNull final ItemClickListener listener) {
-        mGestureClickListener  = new GestureClickListener(listener);
-        mGestureDetector = new GestureDetector(ctx, mGestureClickListener);
+    public RecyclerItemTouchListener(@NonNull final ItemClickListener<T> listener) {
+        mGestureClickListener  = new GestureClickListener<>(listener);
     }
 
     @Override
     public boolean onInterceptTouchEvent(final RecyclerView view, final MotionEvent e) {
         final View childView = view.findChildViewUnder(e.getX(), e.getY());
         if (childView != null) {
-            final int childPosition = view.getChildPosition(childView);
-            mGestureClickListener.setTouchedView(childView, childPosition);
+            final int childPosition = view.getChildAdapterPosition(childView);
+            final RecyclerView.Adapter adapter = view.getAdapter();
+            if (adapter instanceof GestureAdapter) {
+                final GestureAdapter<T, ?> gestureAdapter = (GestureAdapter) adapter;
+                mGestureClickListener.setTouchedItem(gestureAdapter.getItem(childPosition), childPosition);
+            }
 
-            return mGestureDetector.onTouchEvent(e);
+            return getGestureDetector(view.getContext()).onTouchEvent(e);
         }
 
         return false;
     }
 
-    private static class GestureClickListener extends GestureDetector.SimpleOnGestureListener {
+    private GestureDetector getGestureDetector(final Context context) {
+        if (mGestureDetector == null) {
+            mGestureDetector = new GestureDetector(context, mGestureClickListener);
+        }
 
-        private ItemClickListener listener;
+        return mGestureDetector;
+    }
 
-        private View view;
+    private static class GestureClickListener<T> extends GestureDetector.SimpleOnGestureListener {
+
+        private ItemClickListener<T> listener;
+
+        private T item;
         private int viewPosition;
 
-        public GestureClickListener(final ItemClickListener listener) {
+        GestureClickListener(final ItemClickListener<T> listener) {
             this.listener = listener;
         }
 
         @Override
         public boolean onSingleTapConfirmed(final MotionEvent e) {
-            return listener.onItemClick(view, viewPosition);
+            return listener.onItemClick(item, viewPosition);
         }
 
         @Override
         public void onLongPress(final MotionEvent e) {
-            listener.onItemLongPress(view, viewPosition);
+            listener.onItemLongPress(item, viewPosition);
         }
 
         @Override
         public boolean onDoubleTap(final MotionEvent e) {
-            return listener.onDoubleTap(view, viewPosition);
+            return listener.onDoubleTap(item, viewPosition);
         }
 
-        void setTouchedView(final View view, final int viewPosition) {
-            this.view = view;
+        void setTouchedItem(final T item, final int viewPosition) {
+            this.item = item;
             this.viewPosition = viewPosition;
         }
     }
