@@ -7,4 +7,6 @@ public interface MonthItem {
     }
 
     MonthItemType getType();
+
+    String getName();
 }

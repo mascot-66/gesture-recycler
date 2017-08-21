@@ -8,6 +8,7 @@ public class MonthHeader implements MonthItem {
         mName = name;
     }
 
+    @Override
     public String getName() {
         return mName;
     }

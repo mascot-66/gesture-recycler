@@ -8,6 +8,7 @@ import com.thesurix.gesturerecycler.transactions.RevertReorderTransaction;
 import com.thesurix.gesturerecycler.util.FixedSizeArrayDequeue;
 
 import android.support.v4.view.MotionEventCompat;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
@@ -43,7 +44,7 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     }
 
     /** Listener for gestures */
-    public interface OnGestureListener {
+    interface OnGestureListener {
 
         /**
          * Called when view holder item has pending drag gesture.
@@ -138,13 +139,27 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
 
     /**
      * Sets adapter data. This method will interrupt pending animations.
-     * Use {@link #add(T)}, {@link #remove(int)} or {@link #insert(T, int)} to achieve smooth animations.
+     * Use {@link #add(T)}, {@link #remove(int)} or {@link #insert(T, int)} or {@link #setData(List, DiffUtil.Callback)} to achieve smooth animations.
      * @param data data to show
      */
     public void setData(final List<T> data) {
-        mData.clear();
-        mData.addAll(data);
-        notifyDataSetChanged();
+        setData(data, null);
+    }
+
+    /**
+     * Sets adapter data with {@link DiffUtil.Callback} to achieve smooth animations.
+     * @param data data to show
+     * @param diffCallback diff callback to manage internal data changes
+     */
+    public void setData(final List<T> data, final DiffUtil.Callback diffCallback) {
+        if (diffCallback == null) {
+            setNewData(data);
+            notifyDataSetChanged();
+        } else {
+            final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+            setNewData(data);
+            diffResult.dispatchUpdatesTo(this);
+        }
 
         resetTransactions();
     }
@@ -245,19 +260,19 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     }
 
     /**
-     * Sets adapter gesture listener.
-     * @param listener gesture listener
-     */
-    public void setGestureListener(final OnGestureListener listener) {
-        mGestureListener = listener;
-    }
-
-    /**
      * Sets adapter data change listener.
      * @param listener data change listener
      */
     public void setDataChangeListener(final OnDataChangeListener<T> listener) {
         mDataChangeListener = listener;
+    }
+
+    /**
+     * Sets adapter gesture listener.
+     * @param listener gesture listener
+     */
+    void setGestureListener(final OnGestureListener listener) {
+        mGestureListener = listener;
     }
 
     /**
@@ -326,6 +341,11 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     void allowManualDrag(final boolean allowState) {
         mIsManualDragAllowed = allowState;
         notifyDataSetChanged();
+    }
+
+    private void setNewData(final List<T> data) {
+        mData.clear();
+        mData.addAll(data);
     }
 
     private void resetTransactions() {

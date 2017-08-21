@@ -18,6 +18,7 @@ public class Month implements MonthItem {
         return MonthItemType.MONTH;
     }
 
+    @Override
     public String getName() {
         return mName;
     }
