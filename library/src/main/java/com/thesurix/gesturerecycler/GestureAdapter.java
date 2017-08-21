@@ -3,6 +3,7 @@ package com.thesurix.gesturerecycler;
 import com.thesurix.gesturerecycler.transactions.AdapterTransaction;
 import com.thesurix.gesturerecycler.transactions.AddTransaction;
 import com.thesurix.gesturerecycler.transactions.InsertTransaction;
+import com.thesurix.gesturerecycler.transactions.MoveTransaction;
 import com.thesurix.gesturerecycler.transactions.RemoveTransaction;
 import com.thesurix.gesturerecycler.transactions.RevertReorderTransaction;
 import com.thesurix.gesturerecycler.util.FixedSizeArrayDequeue;
@@ -230,6 +231,20 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
     }
 
     /**
+     * Moves item from one position to another.
+     * @param fromPosition item's old position
+     * @param toPosition item's new position
+     * @return true if moved, false otherwise
+     */
+    public boolean move(final int fromPosition, final int toPosition) {
+        final AdapterTransaction moveTransaction = new MoveTransaction<>(this, fromPosition, toPosition);
+        final boolean success = moveTransaction.perform();
+
+        mTransactions.offer(moveTransaction);
+        return success;
+    }
+
+    /**
      * Sets empty view. Empty view is used when adapter has no data.
      * Pass null to disable empty view feature.
      * @param emptyView view to show
@@ -289,31 +304,31 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
 
     /**
      * Moves item from one position to another.
-     * @param fromPos start position
-     * @param toPos end position
+     * @param fromPosition start position
+     * @param toPosition end position
      * @return returns true if transition is successful
      */
-    boolean onItemMove(final int fromPos, final int toPos) {
+    boolean onItemMove(final int fromPosition, final int toPosition) {
         if (mSwappedItem == null) {
-            mStartDragPos = fromPos;
-            mSwappedItem = mData.get(fromPos);
+            mStartDragPos = fromPosition;
+            mSwappedItem = mData.get(fromPosition);
         }
-        mStopDragPos = toPos;
+        mStopDragPos = toPosition;
 
         // Steps bigger than one we have to swap manually in right order
-        final int jumpSize = Math.abs(toPos - fromPos);
+        final int jumpSize = Math.abs(toPosition - fromPosition);
         if (jumpSize > 1) {
-            final int sign = Integer.signum(toPos - fromPos);
-            int startPos = fromPos;
+            final int sign = Integer.signum(toPosition - fromPosition);
+            int startPos = fromPosition;
             for (int i = 0; i < jumpSize; i++) {
                 final int endPos = startPos + sign;
                 Collections.swap(mData, startPos, endPos);
                 startPos += sign;
             }
         } else {
-            Collections.swap(mData, fromPos, toPos);
+            Collections.swap(mData, fromPosition, toPosition);
         }
-        notifyItemMoved(fromPos, toPos);
+        notifyItemMoved(fromPosition, toPosition);
         return true;
     }
 
