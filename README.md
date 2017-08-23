@@ -7,7 +7,7 @@
 This library provides swipe & drag and drop support for RecyclerView. Based on great example from [Android-ItemTouchHelper-Demo](https://github.com/iPaulPro/Android-ItemTouchHelper-Demo).
 
 # Demo
-![](http://i.giphy.com/xT9DPGkRUkPiH3Qum4.gif)
+![](https://media.giphy.com/media/3o7OsSPfA4ymt1kvG8/giphy.gif)
 
 # Features
 * item click/long press/double tap listener
@@ -18,6 +18,7 @@ This library provides swipe & drag and drop support for RecyclerView. Based on g
 * manual mode drag
 * support for different layout managers
 * predefined drag & swipe flags for RecyclerView's layout managers
+* DiffUtil feature
 
 # Dependency
 
@@ -77,26 +78,30 @@ adapter.add(month);
 adapter.insert(month, 5);
 adapter.remove(5);
 
+// or
+adapter.setData(months, diffUtilCallback)
+
 // This will interrupt pending animations
 adapter.setData(months)
+
 ```
 ### Item click events:
 
 ```java
 // Attach DefaultItemClickListener or implement RecyclerItemTouchListener.ItemClickListener
-recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener(getActivity(), new DefaultItemClickListener() {
+recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<CustomItem>() {
             @Override
-            public boolean onItemClick(final View view, final int position) {
+            public boolean onItemClick(final CustomItem item, final int position) {
                 // return true if the event is consumed
                 return false;
             }
 
             @Override
-            public void onItemLongPress(final View view, final int position) {
+            public void onItemLongPress(final CustomItem item, final int position) {
             }
 
             @Override
-            public boolean onDoubleTap(final View view, final int position) {
+            public boolean onDoubleTap(final CustomItem item, final int position) {
                 // return true if the event is consumed
                 return false;
             }
@@ -137,32 +142,6 @@ adapter.undoLast();
 adapter.setUndoSize(2);
 ```
 
-## Old way (v1.0.0):
-To enable swipe/drag and drop support:
-```java
-final GestureTouchHelperCallback touchHelperCallback = new GestureTouchHelperCallback(adapter);
-// Enable swipe
-touchHelperCallback.setSwipeEnabled(true);
-// Enable long press drag and drop 
-touchHelperCallback.setLongPressDragEnabled(true);
-
-// Sets predefined swipe & drag and drop flags based on layout manager type
-touchHelperCallback.setGestureFlagsForLayout(manager);
-
-//or use your own
-touchHelperCallback.setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN);
-touchHelperCallback.setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
-
-final ItemTouchHelper touchHelper = new ItemTouchHelper(touchHelperCallback);
-touchHelper.attachToRecyclerView(recyclerView); 
-```
-To enable manual drag:
-```java
-// Enable manual drag, you need to provide View inside your GestureViewHolder
-touchHelperCallback.setManualDragEnabled(true);
-// Attach default listener for drag triggering
-adapter.setGestureListener(new GestureListener(touchHelper));
-```
 # Help
 See examples.
 
