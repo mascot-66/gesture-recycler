@@ -53,7 +53,8 @@ public class LinearRecyclerFragment extends BaseFragment {
         mGestureManager = new GestureManager.Builder(mRecyclerView)
                 .setSwipeEnabled(true)
                 .setLongPressDragEnabled(true)
-                .setGestureFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.UP | ItemTouchHelper.DOWN)
+                .setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+                .setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN)
                 .build();
 
         adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {

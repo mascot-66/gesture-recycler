@@ -138,13 +138,38 @@ public class GestureManager {
         /**
          * Sets flags for swipe and drag gesture. Do not set this flags if you want predefined flags for RecyclerView layout manager.
          * See {@link ItemTouchHelper} flags.
+         *
+         * This method is deprecated, use {@link #setDragFlags(int)} or {@link #setSwipeFlags(int)}.
          * @param swipeFlags flags for swipe gesture
          * @param dragFlags flags for drag gesture
          * @return returns builder instance
          */
+        @Deprecated
         public Builder setGestureFlags(final int swipeFlags, final int dragFlags) {
             this.swipeFlags = swipeFlags;
             this.dragFlags = dragFlags;
+            return this;
+        }
+
+        /**
+         * Sets flags for swipe gesture. Do not set this flags if you want predefined flags for RecyclerView layout manager.
+         * See {@link ItemTouchHelper} flags.
+         * @param flags flags for swipe gesture
+         * @return returns builder instance
+         */
+        public Builder setSwipeFlags(final int flags) {
+            swipeFlags = flags;
+            return this;
+        }
+
+        /**
+         * Sets flags for drag gesture. Do not set this flags if you want predefined flags for RecyclerView layout manager.
+         * See {@link ItemTouchHelper} flags.
+         * @param flags flags for drag gesture
+         * @return returns builder instance
+         */
+        public Builder setDragFlags(final int flags) {
+            dragFlags = flags;
             return this;
         }
 
