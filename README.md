@@ -26,7 +26,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.4.0'
+    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.4.1'
 }
 ```
 
@@ -55,7 +55,8 @@ GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
                 .setManualDragEnabled(true)
                  // Use custom gesture flags
                  // Do not use this method if you want predefined flags for RecyclerView layout manager 
-                .setGestureFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, ItemTouchHelper.UP | ItemTouchHelper.DOWN)
+                .setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
+                .setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN)
                 .build();
 ```
 
