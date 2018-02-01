@@ -1,12 +1,14 @@
 ext {
-    buildTools = '26.0.2'
-    supportLibrary = '26.0.1'
+    minSdk = 15
+    compileSdk = 27
+    targetSdk = 27
+    buildTools = '27.0.3'
+    supportLibrary = '27.0.2'
     butterKnife = '8.8.1'
 
     viewDependencies = [
             butterKnife : "com.jakewharton:butterknife:${butterKnife}",
-            butterKnifeAnnatation : "com.jakewharton:butterknife-compiler:${butterKnife}",
-            glide : "com.github.bumptech.glide:glide:4.0.0"
+            butterKnifeAnnotation : "com.jakewharton:butterknife-compiler:${butterKnife}"
     ]
 
     supportDependencies = [

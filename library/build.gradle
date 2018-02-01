@@ -9,12 +9,12 @@ ext {
 }
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion compileSdk
     buildToolsVersion buildTools
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode 1
         versionName version
     }
@@ -28,8 +28,8 @@ android {
 
 dependencies {
     testCompile 'junit:junit:4.12'
-    compile supportDependencies.recyclerView
-    compile supportDependencies.appCompat
+    implementation supportDependencies.recyclerView
+    implementation supportDependencies.appCompat
 }
 
 apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'

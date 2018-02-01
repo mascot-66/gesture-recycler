@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion compileSdk
     buildToolsVersion buildTools
 
     defaultConfig {
         applicationId "com.thesurix.example.gesturerecycler"
-        minSdkVersion 15
-        targetSdkVersion 26
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
         versionCode 1
         versionName "1.0"
     }
@@ -23,13 +23,15 @@ android {
 }
 
 dependencies {
+    implementation project(':gesture-recycler')
+    implementation files('libs/glide-full-4.6.0.jar')
+    implementation viewDependencies.butterKnife
+    annotationProcessor viewDependencies.butterKnifeAnnotation
+    implementation supportDependencies.cardView
+    implementation supportDependencies.recyclerView
+    implementation supportDependencies.appCompat
+    implementation supportDependencies.design
+
     testCompile 'junit:junit:4.12'
-    compile project(':gesture-recycler')
-    compile viewDependencies.glide
-    compile viewDependencies.butterKnife
-    annotationProcessor viewDependencies.butterKnifeAnnatation
-    compile supportDependencies.cardView
-    compile supportDependencies.recyclerView
-    compile supportDependencies.appCompat
-    compile supportDependencies.design
+
 }
