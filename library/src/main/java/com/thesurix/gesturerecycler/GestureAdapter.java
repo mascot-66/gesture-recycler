@@ -8,6 +8,7 @@ import com.thesurix.gesturerecycler.transactions.RemoveTransaction;
 import com.thesurix.gesturerecycler.transactions.RevertReorderTransaction;
 import com.thesurix.gesturerecycler.util.FixedSizeArrayDequeue;
 
+import android.annotation.SuppressLint;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
@@ -101,6 +102,8 @@ public abstract class GestureAdapter<T, K extends GestureViewHolder> extends Rec
             if (mIsManualDragAllowed && holder.canDrag()) {
                 holder.showDraggableView();
                 holder.getDraggableView().setOnTouchListener(new View.OnTouchListener() {
+
+                    @SuppressLint("ClickableViewAccessibility")
                     @Override
                     public boolean onTouch(final View view, final MotionEvent motionEvent) {
                         if (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {

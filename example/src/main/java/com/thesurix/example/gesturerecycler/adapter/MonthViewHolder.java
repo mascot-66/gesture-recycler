@@ -7,6 +7,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,9 +19,22 @@ public class MonthViewHolder extends GestureViewHolder {
 
     private static final int SELECT_DURATION_IN_MS = 250;
 
-    @BindView(R.id.month_text) TextView mMonthText;
-    @BindView(R.id.month_image) ImageView mMonthPicture;
-    @BindView(R.id.mont_drag) ImageView mItemDrag;
+    @BindView(R.id.month_text)
+    TextView mMonthText;
+
+    @BindView(R.id.month_image)
+    ImageView mMonthPicture;
+
+    @BindView(R.id.mont_drag)
+    ImageView mItemDrag;
+
+    @Nullable
+    @BindView(R.id.foreground)
+    View mForegroundView;
+
+    @Nullable
+    @BindView(R.id.month_background_stub)
+    ViewStub mBackgroundView;
 
     public MonthViewHolder(final View view) {
         super(view);
@@ -31,6 +45,17 @@ public class MonthViewHolder extends GestureViewHolder {
     @Override
     public View getDraggableView() {
         return mItemDrag;
+    }
+
+    @Override
+    public View getForegroundView() {
+        return mForegroundView == null ? super.getForegroundView() : mForegroundView;
+    }
+
+    @Nullable
+    @Override
+    public View getBackgroundView() {
+        return mBackgroundView;
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,7 @@ public class EmptyViewFragment extends BaseFragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(manager);
 
-        mAdapter = new MonthsAdapter(getContext(), R.layout.linear_item);
+        mAdapter = new MonthsAdapter(getContext(), R.layout.linear_item_with_background);
         mAdapter.setData(getMonths());
         mAdapter.setUndoSize(2);
         mAdapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
@@ -78,6 +79,7 @@ public class EmptyViewFragment extends BaseFragment {
 
         mGestureManager = new GestureManager.Builder(mRecyclerView)
                 .setSwipeEnabled(true)
+                .setSwipeFlags(ItemTouchHelper.LEFT)
                 .setLongPressDragEnabled(true)
                 .build();
     }

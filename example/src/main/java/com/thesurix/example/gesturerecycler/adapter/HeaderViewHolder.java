@@ -12,7 +12,8 @@ import butterknife.ButterKnife;
 
 public class HeaderViewHolder extends GestureViewHolder {
 
-    @BindView(R.id.header_text) TextView mHeaderText;
+    @BindView(R.id.header_text)
+    TextView mHeaderText;
 
     public HeaderViewHolder(final View view) {
         super(view);

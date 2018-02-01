@@ -1,10 +1,12 @@
 package com.thesurix.gesturerecycler;
 
+import android.graphics.Canvas;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 
 import static com.thesurix.gesturerecycler.LayoutFlags.GRID;
 import static com.thesurix.gesturerecycler.LayoutFlags.LINEAR;
@@ -58,11 +60,25 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSelectedChanged(final RecyclerView.ViewHolder viewHolder, final int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
-        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE) {
-            if (viewHolder instanceof GestureViewHolder) {
-                final GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
-                itemViewHolder.onItemSelect();
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE && viewHolder instanceof GestureViewHolder) {
+            final GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
+            final View backgroundView = itemViewHolder.getBackgroundView();
+            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && backgroundView != null) {
+                backgroundView.setVisibility(View.VISIBLE);
             }
+
+            itemViewHolder.onItemSelect();
+        }
+    }
+
+    @Override
+    public void onChildDraw(final Canvas c, final RecyclerView recyclerView, final RecyclerView.ViewHolder viewHolder, final float dX, final float dY,
+            final int actionState, final boolean isCurrentlyActive) {
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            final View foregroundView = ((GestureViewHolder) viewHolder).getForegroundView();
+            getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
+        } else {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }
 
@@ -73,6 +89,14 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
         if (viewHolder instanceof GestureViewHolder) {
             final GestureViewHolder itemViewHolder = (GestureViewHolder) viewHolder;
             itemViewHolder.onItemClear();
+
+            final View backgroundView = itemViewHolder.getBackgroundView();
+            if (backgroundView != null) {
+                backgroundView.setVisibility(View.GONE);
+            }
+
+            final View foregroundView = itemViewHolder.getForegroundView();
+            getDefaultUIUtil().clearView(foregroundView);
         }
     }
 
@@ -124,18 +148,31 @@ public class GestureTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     /**
-     * Sets predefined flags for RecyclerView layout.
+     * Sets predefined drag flags for RecyclerView layout.
      * @param layout type of the RecyclerView layout
      */
-    public void setGestureFlagsForLayout(final RecyclerView.LayoutManager layout) {
+    public void setDragFlagsForLayout(final RecyclerView.LayoutManager layout) {
         if (layout instanceof GridLayoutManager) {
             mDragFlags = GRID.getDragFlags(layout);
-            mSwipeFlags = GRID.getSwipeFlags(layout);
         } else if (layout instanceof LinearLayoutManager) {
             mDragFlags = LINEAR.getDragFlags(layout);
-            mSwipeFlags = LINEAR.getSwipeFlags(layout);
         } else if (layout instanceof StaggeredGridLayoutManager) {
             mDragFlags = STAGGERED.getDragFlags(layout);
+        } else {
+            throw new IllegalArgumentException("Unsupported layout type.");
+        }
+    }
+
+    /**
+     * Sets predefined swipe flags for RecyclerView layout.
+     * @param layout type of the RecyclerView layout
+     */
+    public void setSwipeFlagsForLayout(final RecyclerView.LayoutManager layout) {
+        if (layout instanceof GridLayoutManager) {
+            mSwipeFlags = GRID.getSwipeFlags(layout);
+        } else if (layout instanceof LinearLayoutManager) {
+            mSwipeFlags = LINEAR.getSwipeFlags(layout);
+        } else if (layout instanceof StaggeredGridLayoutManager) {
             mSwipeFlags = STAGGERED.getSwipeFlags(layout);
         } else {
             throw new IllegalArgumentException("Unsupported layout type.");

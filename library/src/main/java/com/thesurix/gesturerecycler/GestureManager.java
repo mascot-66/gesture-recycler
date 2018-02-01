@@ -23,10 +23,15 @@ public class GestureManager {
         touchHelper.attachToRecyclerView(builder.recyclerView);
         adapter.setGestureListener(new GestureListener(touchHelper));
 
-        if(builder.swipeFlags == Builder.INVALID_FLAG || builder.dragFlags == Builder.INVALID_FLAG) {
-            mTouchHelperCallback.setGestureFlagsForLayout(builder.recyclerView.getLayoutManager());
+        if (builder.swipeFlags == Builder.INVALID_FLAG) {
+            mTouchHelperCallback.setSwipeFlagsForLayout(builder.recyclerView.getLayoutManager());
         } else {
             mTouchHelperCallback.setSwipeFlags(builder.swipeFlags);
+        }
+
+        if (builder.dragFlags == Builder.INVALID_FLAG) {
+            mTouchHelperCallback.setDragFlagsForLayout(builder.recyclerView.getLayoutManager());
+        } else {
             mTouchHelperCallback.setDragFlags(builder.dragFlags);
         }
     }

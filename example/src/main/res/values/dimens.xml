@@ -26,4 +26,8 @@
     <!-- Grid item -->
     <dimen name="grid_image_height">180dp</dimen>
     <dimen name="grid_text_padding">10dp</dimen>
+
+    <!-- Remove item -->
+    <dimen name="remove_item_icon_size">52dp</dimen>
+    <dimen name="remove_item_padding">10dp</dimen>
 </resources>

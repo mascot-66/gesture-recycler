@@ -24,6 +24,24 @@ public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
     }
 
     /**
+     * Returns top visible view (originally root view of the item),
+     * override this method to use background view feature in case of swipe gestures.
+     * @return top view
+     */
+    public View getForegroundView() {
+        return itemView;
+    }
+
+    /**
+     * Returns background view which is visible when foreground view is partially or fully swiped.
+     * @return background view
+     */
+    @Nullable
+    public View getBackgroundView() {
+        return null;
+    }
+
+    /**
      * Method that shows view for manual drag gestures.
      * Called only when getDraggableView() returns valid view.
      */
