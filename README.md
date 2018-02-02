@@ -7,10 +7,11 @@
 This library provides swipe & drag and drop support for RecyclerView. Based on great example from [Android-ItemTouchHelper-Demo](https://github.com/iPaulPro/Android-ItemTouchHelper-Demo).
 
 # Demo
-![](https://media.giphy.com/media/3o7OsSPfA4ymt1kvG8/giphy.gif)
+![](https://media.giphy.com/media/l3dj2EhnAGk5ZwiTS/giphy.gif)
 
 # Features
 * item click/long press/double tap listener
+* background view for swipeable items
 * empty view
 * undo
 * swipe 
@@ -26,7 +27,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.4.1'
+    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.5.0'
 }
 ```
 
@@ -54,12 +55,48 @@ GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
                  // Enable manual drag from the beginning, you need to provide View inside your GestureViewHolder
                 .setManualDragEnabled(true)
                  // Use custom gesture flags
-                 // Do not use this method if you want predefined flags for RecyclerView layout manager 
+                 // Do not use those methods if you want predefined flags for RecyclerView layout manager 
                 .setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
                 .setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN)
                 .build();
 ```
+### Background view for swipeable items:
+```xml
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
+    <!-- Content of the background view (you can use regular layout or ViewStub for better performance)-->
+    <ViewStub
+            android:id="@+id/background_view_stub"
+            android:inflatedId="@+id/background_view"
+            android:layout="@layout/background_view_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    
+    <!-- Define your empty view in layout -->
+    <LinearLayout
+            android:id="@+id/foreground_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <!-- Content of the top view -->
+    </LinearLayout>
+</FrameLayout>
+```
+```java
+    // Override getForegroundView(), getBackgroundView() methods in ViewHolder to provide top and bottom view
+    @Override
+    public View getForegroundView() {
+        return mForegroundView; // This view comes from R.id.foreground_view
+    }
+
+    @Override
+    public View getBackgroundView() {
+        return mBackgroundView; // This view comes from R.id.background_view_stub
+    }
+```
 ### Data callbacks:
 ```java
 adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
@@ -147,13 +184,13 @@ adapter.setUndoSize(2);
 See examples.
 
 # To do
-* background view for swipeable items
+* kotlin
 * tests?
 
 # Licence
 
 ```
-Copyright 2016 thesurix
+Copyright 2018 thesurix
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
