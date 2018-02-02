@@ -75,7 +75,6 @@ GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     
-    <!-- Define your empty view in layout -->
     <LinearLayout
             android:id="@+id/foreground_view"
             android:layout_width="match_parent"
