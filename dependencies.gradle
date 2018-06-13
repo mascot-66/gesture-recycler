@@ -3,8 +3,10 @@ ext {
     compileSdk = 27
     targetSdk = 27
     buildTools = '27.0.3'
-    supportLibrary = '27.0.2'
+    supportLibrary = '27.1.1'
     butterKnife = '8.8.1'
+    kotlin_version = '1.2.41'
+
 
     viewDependencies = [
             butterKnife : "com.jakewharton:butterknife:${butterKnife}",
@@ -16,5 +18,9 @@ ext {
             recyclerView : "com.android.support:recyclerview-v7:${supportLibrary}",
             cardView : "com.android.support:cardview-v7:${supportLibrary}",
             appCompat : "com.android.support:appcompat-v7:${supportLibrary}",
+    ]
+
+    langDependencies = [
+            kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     ]
 }

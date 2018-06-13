@@ -1,81 +1,71 @@
-package com.thesurix.gesturerecycler;
+package com.thesurix.gesturerecycler
 
-import android.support.annotation.Nullable;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
+import android.support.v7.widget.RecyclerView
+import android.view.View
 
 /**
  * Base view holder class for gesture compatible items.
  * @author thesurix
  */
-public abstract class GestureViewHolder extends RecyclerView.ViewHolder {
-
-    public GestureViewHolder(final View itemView) {
-        super(itemView);
-    }
+abstract class GestureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     /**
      * Returns view that can spawn drag gesture. If there is no view simply return null.
      * @return view that can spawn drag gesture
      */
-    @Nullable
-    public View getDraggableView() {
-        return null;
-    }
+    open val draggableView: View?
+        get() = null
 
     /**
      * Returns top visible view (originally root view of the item),
      * override this method to use background view feature in case of swipe gestures.
      * @return top view
      */
-    public View getForegroundView() {
-        return itemView;
-    }
+    open val foregroundView: View
+        get() = itemView
 
     /**
      * Returns background view which is visible when foreground view is partially or fully swiped.
      * @return background view
      */
-    @Nullable
-    public View getBackgroundView() {
-        return null;
-    }
+    open val backgroundView: View?
+        get() = null
 
     /**
      * Method that shows view for manual drag gestures.
      * Called only when getDraggableView() returns valid view.
      */
-    public void showDraggableView() {
-        getDraggableView().setVisibility(View.VISIBLE);
+    fun showDraggableView() {
+        draggableView?.visibility = View.VISIBLE
     }
 
     /**
      * Method that hides view for manual drag gestures.
      * Called only when getDraggableView() returns valid view.
      */
-    public void hideDraggableView() {
-        getDraggableView().setVisibility(View.GONE);
+    fun hideDraggableView() {
+        draggableView?.visibility = View.GONE
     }
 
     /**
      * Indicates that view is selected.
      */
-    public void onItemSelect() {}
+    open fun onItemSelect() {}
 
     /**
      * Indicates that view has no selection.
      */
-    public void onItemClear() {}
+    open fun onItemClear() {}
 
     /**
      * Returns information if we can drag this view.
      * @return true if draggable, false otherwise
      */
-    public abstract boolean canDrag();
+    abstract fun canDrag(): Boolean
 
     /**
      * Returns information if we can swipe this view.
      * @return true if swipeable, false otherwise
      */
-    public abstract boolean canSwipe();
+    abstract fun canSwipe(): Boolean
 }
