@@ -11,24 +11,23 @@ class AddTransaction<T>(private val adapter: GestureAdapter<T, out GestureViewHo
                         private val item: T) : AdapterTransaction {
 
     override fun perform(): Boolean {
-        with(adapter) {
+        return with(adapter) {
             val success = data.add(item)
             if (success) {
-                notifyItemInserted(adapter.itemCount)
+                notifyItemInserted(itemCount)
             }
-            return success
+            success
         }
     }
 
     override fun revert(): Boolean {
-        with(adapter) {
+        return with(adapter) {
             val dataSize = itemCount
             val item = data.removeAt(dataSize - 1)
-            val success = item != null
-            if (success) {
+            item?.let {
                 notifyItemRemoved(dataSize)
-            }
-            return success
+                true
+            } ?: false
         }
     }
 }

@@ -13,8 +13,6 @@ import android.view.MotionEvent
  */
 class RecyclerItemTouchListener<T>(listener: ItemClickListener<T>) : RecyclerView.SimpleOnItemTouchListener() {
 
-    private val gestureClickListener = GestureClickListener(listener)
-
     /**
      * The listener that is used to notify when a tap, long press or double tap occur.
      */
@@ -44,15 +42,16 @@ class RecyclerItemTouchListener<T>(listener: ItemClickListener<T>) : RecyclerVie
         fun onDoubleTap(item: T, position: Int): Boolean
     }
 
+    private val gestureClickListener = GestureClickListener(listener)
+
     override fun onInterceptTouchEvent(view: RecyclerView, e: MotionEvent): Boolean {
         val childView = view.findChildViewUnder(e.x, e.y)
         if (childView != null) {
             val childPosition = view.getChildAdapterPosition(childView)
             val adapter = view.adapter
             if (adapter is GestureAdapter<*, *>) {
-                val item = adapter.getItem(childPosition)
-                //TODO
-                gestureClickListener.setTouchedItem(item as T, childPosition)
+                val gestureAdapter = adapter as GestureAdapter<T, *>
+                gestureClickListener.setTouchedItem(gestureAdapter.getItem(childPosition), childPosition)
             }
 
             return getGestureDetector(view.context).onTouchEvent(e)
@@ -66,10 +65,11 @@ class RecyclerItemTouchListener<T>(listener: ItemClickListener<T>) : RecyclerVie
     }
 }
 
-private class GestureClickListener<T> internal constructor(private val listener: RecyclerItemTouchListener.ItemClickListener<T>) : GestureDetector.SimpleOnGestureListener() {
+private class GestureClickListener<T> internal constructor(private val listener: RecyclerItemTouchListener.ItemClickListener<T>)
+    : GestureDetector.SimpleOnGestureListener() {
 
     private var item: T? = null
-    private var viewPosition: Int = 0
+    private var viewPosition = 0
 
     override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
         return item?.let { listener.onItemClick(it, viewPosition) } ?: false

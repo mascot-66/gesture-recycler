@@ -136,15 +136,17 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @param diffCallback diff callback to manage internal data changes
      */
     fun setData(data: List<T>, diffCallback: DiffUtil.Callback?) {
-        if (diffCallback == null) {
-            setNewData(data)
-            notifyDataSetChanged()
-        } else {
-            val diffResult = DiffUtil.calculateDiff(diffCallback)
-            setNewData(data)
-            diffResult.dispatchUpdatesTo(this)
+        when(diffCallback) {
+            null -> {
+                setNewData(data)
+                notifyDataSetChanged()
+            }
+            else -> {
+                val diffResult = DiffUtil.calculateDiff(diffCallback)
+                setNewData(data)
+                diffResult.dispatchUpdatesTo(this)
+            }
         }
-
         resetTransactions()
     }
 
@@ -270,10 +272,10 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @param position item's position
      */
     internal fun onItemDismissed(position: Int) {
-        val removed = _data[position]
+        val removedItem = _data[position]
         val wasRemoved = remove(position)
         if (wasRemoved) {
-            dataChangeListener?.onItemRemoved(removed, position)
+            dataChangeListener?.onItemRemoved(removedItem, position)
         }
     }
 
@@ -311,14 +313,15 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * Called when item has been moved.
      */
     internal fun onItemMoved() {
-        if (swappedItem != null && stopDragPos != INVALID_DRAG_POS) {
-            //TODO
-            dataChangeListener?.onItemReorder(swappedItem as T, startDragPos, stopDragPos)
+        swappedItem?.let {
+            if (stopDragPos != INVALID_DRAG_POS) {
+                dataChangeListener?.onItemReorder(it, startDragPos, stopDragPos)
 
-            val revertReorderTransaction = RevertReorderTransaction(this, startDragPos, stopDragPos)
-            transactions.offer(revertReorderTransaction)
-            swappedItem = null
-            stopDragPos = INVALID_DRAG_POS
+                val revertReorderTransaction = RevertReorderTransaction(this, startDragPos, stopDragPos)
+                transactions.offer(revertReorderTransaction)
+                swappedItem = null
+                stopDragPos = INVALID_DRAG_POS
+            }
         }
     }
 

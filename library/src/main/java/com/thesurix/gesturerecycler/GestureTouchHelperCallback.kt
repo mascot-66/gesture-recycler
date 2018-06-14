@@ -49,23 +49,25 @@ class GestureTouchHelperCallback(private val mGestureAdapter: GestureAdapter<*, 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
         if (actionState != ItemTouchHelper.ACTION_STATE_IDLE && viewHolder is GestureViewHolder) {
-            val itemViewHolder = viewHolder as GestureViewHolder?
-            val backgroundView = itemViewHolder!!.backgroundView
-            if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE && backgroundView != null) {
-                backgroundView.visibility = View.VISIBLE
+            val backgroundView = viewHolder.backgroundView
+            backgroundView?.let {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    backgroundView.visibility = View.VISIBLE
+                }
             }
 
-            itemViewHolder.onItemSelect()
+            viewHolder.onItemSelect()
         }
     }
 
     override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float,
                              actionState: Int, isCurrentlyActive: Boolean) {
-        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
-            val foregroundView = (viewHolder as GestureViewHolder).foregroundView
-            ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive)
-        } else {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        when(actionState) {
+            ItemTouchHelper.ACTION_STATE_SWIPE -> {
+                val foregroundView = (viewHolder as GestureViewHolder).foregroundView
+                ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive)
+            }
+            else -> super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         }
     }
 
@@ -76,9 +78,7 @@ class GestureTouchHelperCallback(private val mGestureAdapter: GestureAdapter<*, 
             viewHolder.onItemClear()
 
             val backgroundView = viewHolder.backgroundView
-            if (backgroundView != null) {
-                backgroundView.visibility = View.GONE
-            }
+            backgroundView?.visibility = View.GONE
 
             val foregroundView = viewHolder.foregroundView
             ItemTouchHelper.Callback.getDefaultUIUtil().clearView(foregroundView)

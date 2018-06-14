@@ -12,21 +12,20 @@ class InsertTransaction<T>(private val adapter: GestureAdapter<T, out GestureVie
                            private val position: Int) : AdapterTransaction {
 
     override fun perform(): Boolean {
-        with(adapter) {
+        return with(adapter) {
             data.add(position, item)
             notifyItemInserted(position)
+            true
         }
-        return true
     }
 
     override fun revert(): Boolean {
-        with(adapter) {
+        return with(adapter) {
             val item = data.removeAt(position)
-            val success = item != null
-            if (success) {
+            item?.let {
                 notifyItemRemoved(position)
-            }
-            return success
+                true
+            } ?: false
         }
     }
 }

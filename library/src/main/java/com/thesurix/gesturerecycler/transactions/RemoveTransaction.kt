@@ -12,13 +12,13 @@ class RemoveTransaction<T>(private val adapter: GestureAdapter<T, out GestureVie
     private var item: T? = null
 
     override fun perform(): Boolean {
-        with(adapter) {
-            item = data.removeAt(position)
-            val success = item != null
-            if (success) {
+        return with(adapter) {
+            val removedItem = data.removeAt(position)
+            removedItem?.let {
+                item = it
                 notifyItemRemoved(position)
-            }
-            return success
+                true
+            } ?: false
         }
     }
 

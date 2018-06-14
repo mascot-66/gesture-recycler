@@ -10,28 +10,26 @@ class MoveTransaction<T>(private val adapter: GestureAdapter<T, out GestureViewH
     private var item: T? = null
 
     override fun perform(): Boolean {
-        with(adapter) {
-            item = data.removeAt(from)
-            val success = item != null
-            if (success) {
-                //TODO
-                data.add(to, item as T)
+        return with(adapter) {
+            val removedItem = data.removeAt(from)
+            removedItem?.let {
+                item = it
+                data.add(to, it)
                 notifyItemMoved(from, to)
-            }
-            return success
+                true
+            } ?: false
         }
     }
 
     override fun revert(): Boolean {
-        with(adapter) {
-            item = data.removeAt(to)
-            val success = item != null
-            if (success) {
-                //TODO
-                data.add(from, item as T)
+        return with(adapter) {
+            val removedItem = data.removeAt(to)
+            removedItem?.let {
+                item = it
+                data.add(from, it)
                 notifyItemMoved(to, from)
-            }
-            return success
+                true
+            } ?: false
         }
     }
 }

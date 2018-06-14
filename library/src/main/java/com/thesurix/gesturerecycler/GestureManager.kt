@@ -86,7 +86,6 @@ class GestureManager {
      * @param recyclerView RecyclerView instance
      */
     class Builder(val recyclerView: RecyclerView) {
-
         var swipeFlags = INVALID_FLAG
             private set
         var dragFlags = INVALID_FLAG
