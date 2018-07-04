@@ -1,6 +1,5 @@
 package com.thesurix.gesturerecycler
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.GestureDetector
 import android.view.MotionEvent
@@ -12,6 +11,8 @@ import android.view.MotionEvent
  * @author thesurix
  */
 class RecyclerItemTouchListener<T>(listener: ItemClickListener<T>) : RecyclerView.SimpleOnItemTouchListener() {
+
+    private var gestureDetector: GestureDetector? = null
 
     /**
      * The listener that is used to notify when a tap, long press or double tap occur.
@@ -54,14 +55,14 @@ class RecyclerItemTouchListener<T>(listener: ItemClickListener<T>) : RecyclerVie
                 gestureClickListener.setTouchedItem(gestureAdapter.getItem(childPosition), childPosition)
             }
 
-            return getGestureDetector(view.context).onTouchEvent(e)
+            if (gestureDetector == null) {
+                gestureDetector = GestureDetector(view.context, gestureClickListener)
+            }
+
+            return gestureDetector?.onTouchEvent(e) ?: false
         }
 
         return false
-    }
-
-    private fun getGestureDetector(context: Context): GestureDetector {
-        return GestureDetector(context, gestureClickListener)
     }
 }
 
