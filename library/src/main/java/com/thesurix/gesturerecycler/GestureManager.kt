@@ -86,15 +86,15 @@ class GestureManager {
      * @param recyclerView RecyclerView instance
      */
     class Builder(val recyclerView: RecyclerView) {
-        var swipeFlags = INVALID_FLAG
+        internal var swipeFlags = INVALID_FLAG
             private set
-        var dragFlags = INVALID_FLAG
+        internal var dragFlags = INVALID_FLAG
             private set
-        var isSwipeEnabled = false
+        internal var isSwipeEnabled = false
             private set
-        var isDragEnabled = false
+        internal var isDragEnabled = false
             private set
-        var isManualDragEnabled = false
+        internal var isManualDragEnabled = false
             private set
 
         /**
@@ -139,7 +139,7 @@ class GestureManager {
          * @param dragFlags flags for drag gesture
          * @return returns builder instance
          */
-        @Deprecated("")
+        @Deprecated("Use setSwipeFlags() and setDragFlags() methods.")
         fun setGestureFlags(swipeFlags: Int, dragFlags: Int): Builder {
             this.swipeFlags = swipeFlags
             this.dragFlags = dragFlags

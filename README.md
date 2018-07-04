@@ -27,7 +27,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.5.0'
+    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.6.0'
 }
 ```
 
@@ -183,8 +183,9 @@ adapter.setUndoSize(2);
 See examples.
 
 # To do
-* kotlin
-* tests?
+* bindable ViewHolder
+* examples with data binding
+* tests
 
 # Licence
 

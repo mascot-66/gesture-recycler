@@ -15,7 +15,7 @@ import com.thesurix.gesturerecycler.LayoutFlags.*
  * @param adapter adapter
  * @author thesurix
  */
-class GestureTouchHelperCallback(private val mGestureAdapter: GestureAdapter<*, *>) : ItemTouchHelper.Callback() {
+class GestureTouchHelperCallback(private val gestureAdapter: GestureAdapter<*, *>) : ItemTouchHelper.Callback() {
 
     /** Flag that enables or disables swipe gesture  */
     var swipeEnabled = false
@@ -23,7 +23,7 @@ class GestureTouchHelperCallback(private val mGestureAdapter: GestureAdapter<*, 
     var manualDragEnabled = false
         set(enabled) {
             field = enabled
-            mGestureAdapter.allowManualDrag(manualDragEnabled)
+            gestureAdapter.allowManualDrag(manualDragEnabled)
         }
     /** Flag that enables long press drag gesture  */
     var longPressDragEnabled = false
@@ -39,11 +39,11 @@ class GestureTouchHelperCallback(private val mGestureAdapter: GestureAdapter<*, 
     }
 
     override fun onMove(recyclerView: RecyclerView, source: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-        return mGestureAdapter.onItemMove(source.adapterPosition, target.adapterPosition)
+        return gestureAdapter.onItemMove(source.adapterPosition, target.adapterPosition)
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        mGestureAdapter.onItemDismissed(viewHolder.adapterPosition)
+        gestureAdapter.onItemDismissed(viewHolder.adapterPosition)
     }
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
@@ -73,7 +73,7 @@ class GestureTouchHelperCallback(private val mGestureAdapter: GestureAdapter<*, 
 
     override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        mGestureAdapter.onItemMoved()
+        gestureAdapter.onItemMoved()
         if (viewHolder is GestureViewHolder) {
             viewHolder.onItemClear()
 
