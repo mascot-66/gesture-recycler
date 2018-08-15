@@ -244,6 +244,14 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
     }
 
     /**
+     * Sets empty view visibility listener.
+     * @param listener empty view visibility listener
+     */
+    fun setEmptyViewVisibilityListener(listener: EmptyViewVisibilityListener) {
+        emptyViewDataObserver.emptyViewVisibilityListener = listener
+    }
+
+    /**
      * Sets undo stack size. If undo stack is full, the oldest action will be removed (default size is 1).
      * @param size undo actions size
      */

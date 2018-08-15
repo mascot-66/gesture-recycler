@@ -19,6 +19,8 @@ internal class EmptyViewDataObserver : RecyclerView.AdapterDataObserver() {
             updateEmptyViewState()
         }
 
+    var emptyViewVisibilityListener: EmptyViewVisibilityListener? = null
+
     override fun onChanged() {
         updateEmptyViewState()
     }
@@ -32,12 +34,15 @@ internal class EmptyViewDataObserver : RecyclerView.AdapterDataObserver() {
     }
 
     private fun updateEmptyViewState() {
-        if (recyclerView?.adapter?.itemCount == 0) {
-            emptyView?.visibility = View.VISIBLE
-            recyclerView?.visibility = View.GONE
-        } else {
-            emptyView?.visibility = View.GONE
-            recyclerView?.visibility = View.VISIBLE
+        recyclerView?.let {
+            val noItems = it.adapter?.itemCount == 0
+            emptyView?.visibility = if (noItems) View.VISIBLE else View.GONE
+            recyclerView?.visibility = if (noItems) View.GONE else View.VISIBLE
+            emptyViewVisibilityListener?.onEmptyViewVisibilityChanged(noItems)
         }
     }
+}
+
+interface EmptyViewVisibilityListener {
+    fun onEmptyViewVisibilityChanged(visible: Boolean)
 }
