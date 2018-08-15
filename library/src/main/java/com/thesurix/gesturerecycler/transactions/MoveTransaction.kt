@@ -1,33 +1,28 @@
 package com.thesurix.gesturerecycler.transactions
 
-
-import com.thesurix.gesturerecycler.GestureAdapter
-import com.thesurix.gesturerecycler.GestureViewHolder
-
-class MoveTransaction<T>(private val adapter: GestureAdapter<T, out GestureViewHolder>,
-                         private val from: Int,
-                         private val to: Int) : AdapterTransaction {
+class MoveTransaction<T>(private val from: Int,
+                         private val to: Int) : Transaction<T> {
     private var item: T? = null
 
-    override fun perform(): Boolean {
-        return with(adapter) {
-            val removedItem = data.removeAt(from)
+    override fun perform(transactional: Transactional<T>): Boolean {
+        return with(transactional.data) {
+            val removedItem = removeAt(from)
             removedItem?.let {
                 item = it
-                data.add(to, it)
-                notifyItemMoved(from, to)
+                add(to, it)
+                transactional.notifyMoved(from, to)
                 true
             } ?: false
         }
     }
 
-    override fun revert(): Boolean {
-        return with(adapter) {
-            val removedItem = data.removeAt(to)
+    override fun revert(transactional: Transactional<T>): Boolean {
+        return with(transactional.data) {
+            val removedItem = removeAt(to)
             removedItem?.let {
                 item = it
-                data.add(from, it)
-                notifyItemMoved(to, from)
+                add(from, it)
+                transactional.notifyMoved(to, from)
                 true
             } ?: false
         }

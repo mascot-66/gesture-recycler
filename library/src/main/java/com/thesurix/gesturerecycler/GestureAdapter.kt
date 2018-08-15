@@ -15,7 +15,7 @@ private const val INVALID_DRAG_POS = -1
  * Base adapter for gesture recognition, extends this to provide own implementation. T is the data type, K is the ViewHolder type.
  * @author thesurix
  */
-abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K>() {
+abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K>(), Transactional<T> {
 
     /** Temp item for swap action  */
     private var swappedItem: T? = null
@@ -26,7 +26,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
     /** Flag that defines if adapter allows manual dragging  */
     private var manualDragAllowed = false
     /** This variable holds stack of data transactions for undo purposes  */
-    private var transactions = FixedSizeArrayDequeue<AdapterTransaction>(1)
+    private var transactions = FixedSizeArrayDequeue<Transaction<T>>(1)
 
     private var gestureListener: OnGestureListener? = null
     private var dataChangeListener: OnDataChangeListener<T>? = null
@@ -63,7 +63,8 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * Use [.add], [.remove] or [.insert] or [.setData] to achieve smooth animations.
      * @param data data to show
      */
-    var data: MutableList<T>
+
+    override var data: MutableList<T>
         get() = _data
         set(data) = setData(data, null)
 
@@ -130,6 +131,18 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
         resetTransactions()
     }
 
+    override fun notifyInserted(position: Int) {
+        notifyItemInserted(position)
+    }
+
+    override fun notifyRemoved(position: Int) {
+        notifyItemRemoved(position)
+    }
+
+    override fun notifyMoved(fromPosition: Int, toPosition: Int) {
+        notifyItemMoved(fromPosition, toPosition)
+    }
+
     /**
      * Sets adapter data with [DiffUtil.Callback] to achieve smooth animations.
      * @param data data to show
@@ -175,8 +188,8 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @return true if added, false otherwise
      */
     fun add(item: T): Boolean {
-        val addTransaction = AddTransaction(this, item)
-        val success = addTransaction.perform()
+        val addTransaction = AddTransaction(item)
+        val success = addTransaction.perform(this)
 
         transactions.offer(addTransaction)
         return success
@@ -188,8 +201,8 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @return true if removed, false otherwise
      */
     fun remove(position: Int): Boolean {
-        val removeTransaction = RemoveTransaction(this, position)
-        val success = removeTransaction.perform()
+        val removeTransaction = RemoveTransaction<T>(position)
+        val success = removeTransaction.perform(this)
 
         transactions.offer(removeTransaction)
         return success
@@ -201,8 +214,8 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @param position position for the item
      */
     fun insert(item: T, position: Int) {
-        val insertTransaction = InsertTransaction(this, item, position)
-        insertTransaction.perform()
+        val insertTransaction = InsertTransaction(item, position)
+        insertTransaction.perform(this)
 
         transactions.offer(insertTransaction)
     }
@@ -214,8 +227,8 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @return true if moved, false otherwise
      */
     fun move(fromPosition: Int, toPosition: Int): Boolean {
-        val moveTransaction = MoveTransaction(this, fromPosition, toPosition)
-        val success = moveTransaction.perform()
+        val moveTransaction = MoveTransaction<T>(fromPosition, toPosition)
+        val success = moveTransaction.perform(this)
 
         transactions.offer(moveTransaction)
         return success
@@ -248,7 +261,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @return true for successful undo action, false otherwise
      */
     fun undoLast(): Boolean {
-        return transactions.isNotEmpty() && transactions.pollLast().revert()
+        return transactions.isNotEmpty() && transactions.pollLast().revert(this)
     }
 
     /**
@@ -317,7 +330,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
             if (stopDragPos != INVALID_DRAG_POS) {
                 dataChangeListener?.onItemReorder(it, startDragPos, stopDragPos)
 
-                val revertReorderTransaction = RevertReorderTransaction(this, startDragPos, stopDragPos)
+                val revertReorderTransaction = RevertReorderTransaction<T>(startDragPos, stopDragPos)
                 transactions.offer(revertReorderTransaction)
                 swappedItem = null
                 stopDragPos = INVALID_DRAG_POS

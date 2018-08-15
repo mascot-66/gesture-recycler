@@ -6,6 +6,8 @@ ext {
     supportLibrary = '27.1.1'
     butterKnife = '8.8.1'
     kotlin_version = '1.2.41'
+    junit_version = '4.12'
+    mockito_version = '2.8.47'
 
 
     viewDependencies = [
@@ -22,5 +24,11 @@ ext {
 
     langDependencies = [
             kotlin : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    ]
+
+    testDependencies = [
+            junit : "junit:junit:$junit_version",
+            mockito : "org.mockito:mockito-core:$mockito_version",
+            junitKotlin : "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     ]
 }

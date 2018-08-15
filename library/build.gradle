@@ -54,6 +54,10 @@ dependencies {
     implementation supportDependencies.recyclerView
     implementation supportDependencies.appCompat
     implementation langDependencies.kotlin
+
+    testImplementation testDependencies.junit
+    testImplementation testDependencies.mockito
+    testImplementation testDependencies.junitKotlin
 }
 
 tasks.withType(Javadoc).all {

@@ -1,25 +1,21 @@
 package com.thesurix.gesturerecycler.transactions
 
-import com.thesurix.gesturerecycler.GestureAdapter
-import com.thesurix.gesturerecycler.GestureViewHolder
 
 /**
  * @author thesurix
  */
-class RevertReorderTransaction<T>(private val adapter: GestureAdapter<T, out GestureViewHolder>,
-                                  private val from: Int,
-                                  private val to: Int) : AdapterTransaction {
+class RevertReorderTransaction<T>(private val from: Int,
+                                  private val to: Int) : Transaction<T> {
 
-    override fun perform() = false
+    override fun perform(transactional: Transactional<T>) = false
 
-
-    override fun revert(): Boolean {
-        return with(adapter) {
-            val item = data.removeAt(to)
+    override fun revert(transactional: Transactional<T>): Boolean {
+        return with(transactional.data) {
+            val item = removeAt(to)
             item?.let {
-                notifyItemRemoved(to)
-                data.add(from, it)
-                notifyItemInserted(from)
+                transactional.notifyRemoved(to)
+                add(from, it)
+                transactional.notifyInserted(from)
                 true
             } ?: false
         }
