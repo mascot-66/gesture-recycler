@@ -17,8 +17,6 @@ import butterknife.ButterKnife;
 
 public class MonthViewHolder extends GestureViewHolder {
 
-    private static final int SELECT_DURATION_IN_MS = 250;
-
     @BindView(R.id.month_text)
     TextView mMonthText;
 
@@ -63,14 +61,14 @@ public class MonthViewHolder extends GestureViewHolder {
         final int textColorFrom = itemView.getContext().getResources().getColor(android.R.color.white);
         final int textColorTo = itemView.getContext().getResources().getColor(R.color.indigo_500);
         final ValueAnimator textAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), textColorFrom, textColorTo);
-        textAnimation.setDuration(SELECT_DURATION_IN_MS);
+        textAnimation.setDuration(itemView.getContext().getResources().getInteger(R.integer.animation_speed_ms));
         textAnimation.addUpdateListener(getTextAnimatorListener(mMonthText, textAnimation));
         textAnimation.start();
 
         final int backgroundColorFrom = itemView.getContext().getResources().getColor(R.color.indigo_500);
         final int backgroundColorTo = itemView.getContext().getResources().getColor(android.R.color.white);
         final ValueAnimator backgroundAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), backgroundColorFrom, backgroundColorTo);
-        backgroundAnimation.setDuration(SELECT_DURATION_IN_MS);
+        backgroundAnimation.setDuration(itemView.getContext().getResources().getInteger(R.integer.animation_speed_ms));
         backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(mMonthText, backgroundAnimation));
         backgroundAnimation.start();
     }
@@ -80,14 +78,14 @@ public class MonthViewHolder extends GestureViewHolder {
         final int textColorFrom = itemView.getContext().getResources().getColor(R.color.indigo_500);
         final int textColorTo = itemView.getContext().getResources().getColor(android.R.color.white);
         final ValueAnimator textAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), textColorFrom, textColorTo);
-        textAnimation.setDuration(SELECT_DURATION_IN_MS);
+        textAnimation.setDuration(itemView.getContext().getResources().getInteger(R.integer.animation_speed_ms));
         textAnimation.addUpdateListener(getTextAnimatorListener(mMonthText, textAnimation));
         textAnimation.start();
 
         final int backgroundColorFrom = itemView.getContext().getResources().getColor(android.R.color.white);
         final int backgroundColorTo = itemView.getContext().getResources().getColor(R.color.indigo_500);
         final ValueAnimator backgroundAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), backgroundColorFrom, backgroundColorTo);
-        backgroundAnimation.setDuration(SELECT_DURATION_IN_MS);
+        backgroundAnimation.setDuration(itemView.getContext().getResources().getInteger(R.integer.animation_speed_ms));
         backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(mMonthText, backgroundAnimation));
         backgroundAnimation.start();
     }

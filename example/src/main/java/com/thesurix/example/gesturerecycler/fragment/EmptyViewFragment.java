@@ -5,9 +5,12 @@ import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
 import com.thesurix.example.gesturerecycler.callback.MonthDiffCallback;
 import com.thesurix.example.gesturerecycler.model.Month;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
+import com.thesurix.gesturerecycler.EmptyViewVisibilityListener;
 import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureManager;
 
+import android.animation.FloatEvaluator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -73,8 +76,17 @@ public class EmptyViewFragment extends BaseFragment {
         });
 
         final View emptyView = view.findViewById(R.id.empty_root);
-        mAdapter.setEmptyView(emptyView);
-
+        mAdapter.setEmptyViewVisibilityListener(new EmptyViewVisibilityListener() {
+            @Override
+            public void onVisibilityChanged(final boolean visible) {
+                if (visible) {
+                    emptyView.setVisibility(View.VISIBLE);
+                    runFadeInAnimation(emptyView);
+                } else {
+                    runFadeOutAnimation(emptyView);
+                }
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
 
         mGestureManager = new GestureManager.Builder(mRecyclerView)
@@ -125,5 +137,36 @@ public class EmptyViewFragment extends BaseFragment {
         monthList.add(new Month("JUN", R.drawable.june));
 
         return monthList;
+    }
+
+    private void runFadeInAnimation(final View emptyView) {
+        final ValueAnimator fadeInAnimation = ValueAnimator.ofObject(new FloatEvaluator(), 0f, 1f);
+        fadeInAnimation.setDuration(getResources().getInteger(R.integer.animation_speed_ms));
+        fadeInAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(final ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                emptyView.setAlpha(alpha);
+            }
+        });
+        fadeInAnimation.start();
+    }
+
+    private void runFadeOutAnimation(final View emptyView) {
+        final ValueAnimator fadeOutAnimation = ValueAnimator.ofObject(new FloatEvaluator(), 1f, 0f);
+        fadeOutAnimation.setDuration(getResources().getInteger(R.integer.animation_speed_ms));
+        fadeOutAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(final ValueAnimator animation) {
+                float alpha = (float) animation.getAnimatedValue();
+                emptyView.setAlpha(alpha);
+
+                if (alpha < 0.01f) {
+                    emptyView.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        fadeOutAnimation.start();
     }
 }

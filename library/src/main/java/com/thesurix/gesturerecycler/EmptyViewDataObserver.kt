@@ -38,11 +38,11 @@ internal class EmptyViewDataObserver : RecyclerView.AdapterDataObserver() {
             val noItems = it.adapter?.itemCount == 0
             emptyView?.visibility = if (noItems) View.VISIBLE else View.GONE
             recyclerView?.visibility = if (noItems) View.GONE else View.VISIBLE
-            emptyViewVisibilityListener?.onEmptyViewVisibilityChanged(noItems)
+            emptyViewVisibilityListener?.onVisibilityChanged(noItems)
         }
     }
 }
 
 interface EmptyViewVisibilityListener {
-    fun onEmptyViewVisibilityChanged(visible: Boolean)
+    fun onVisibilityChanged(visible: Boolean)
 }
