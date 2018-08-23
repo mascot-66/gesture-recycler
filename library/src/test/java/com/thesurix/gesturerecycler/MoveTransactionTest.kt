@@ -6,7 +6,7 @@ import org.mockito.Mockito
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class MoveTransactionTest: BaseTransactionTest() {
+class MoveTransactionTest : BaseTransactionTest() {
 
     @Test
     fun `move item in transaction`() {
@@ -20,11 +20,9 @@ class MoveTransactionTest: BaseTransactionTest() {
 
     @Test
     fun `revert move item in transaction`() {
-        val item = transactional.data[1]
+        val item = transactional.data[4]
         val transaction = MoveTransaction<String>(1, 4)
-        transaction.perform(transactional)
 
-        assertEquals(transactional.data[4], item)
         assertTrue(transaction.revert(transactional))
         assertEquals(transactional.data[1], item)
         Mockito.verify(transactional).notifyMoved(4, 1)

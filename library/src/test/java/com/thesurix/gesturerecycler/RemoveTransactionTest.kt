@@ -6,7 +6,7 @@ import org.mockito.Mockito
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class RemoveTransactionTest: BaseTransactionTest() {
+class RemoveTransactionTest : BaseTransactionTest() {
 
     @Test
     fun `remove item in transaction`() {

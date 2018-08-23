@@ -131,6 +131,10 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
         resetTransactions()
     }
 
+    override fun notifyChanged(position: Int) {
+        notifyItemChanged(position)
+    }
+
     override fun notifyInserted(position: Int) {
         notifyItemInserted(position)
     }
@@ -231,6 +235,20 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
         val success = moveTransaction.perform(this)
 
         transactions.offer(moveTransaction)
+        return success
+    }
+
+    /**
+     * Swap items in given positions.
+     * @param firstPosition first item position
+     * @param secondPosition second item position
+     * @return true if swapped, false otherwise
+     */
+    fun swap(firstPosition: Int, secondPosition: Int): Boolean {
+        val swapTransaction = SwapTransaction<T>(firstPosition, secondPosition)
+        val success = swapTransaction.perform(this)
+
+        transactions.offer(swapTransaction)
         return success
     }
 

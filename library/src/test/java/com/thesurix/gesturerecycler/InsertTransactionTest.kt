@@ -6,7 +6,7 @@ import org.mockito.Mockito
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class InsertTransactionTest: BaseTransactionTest() {
+class InsertTransactionTest : BaseTransactionTest() {
 
     @Test
     fun `insert item in transaction`() {

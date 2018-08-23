@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
-class RevertReorderTransactionTest: BaseTransactionTest() {
+class RevertReorderTransactionTest : BaseTransactionTest() {
 
     @Test
     fun `reorder item in transaction`() {
