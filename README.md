@@ -169,6 +169,14 @@ recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultI
 // Pass null to disable empty view
 final View emptyView = view.findViewById(R.id.empty_view);
 adapter.setEmptyView(emptyView);
+
+// or use callback
+adapter.setEmptyViewVisibilityListener(new EmptyViewVisibilityListener() {
+            @Override
+            public void onVisibilityChanged(final boolean visible) {
+                // show/hide emptyView with animation
+            }
+       });
 ```
 ### Undo:
 ```java
