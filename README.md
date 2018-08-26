@@ -194,6 +194,7 @@ See examples.
 * bindable ViewHolder
 * examples with data binding
 * tests
+* header/footer
 
 # Licence
 
