@@ -46,23 +46,24 @@ class RecyclerItemTouchListener<T>(listener: ItemClickListener<T>) : RecyclerVie
     private val gestureClickListener = GestureClickListener(listener)
 
     override fun onInterceptTouchEvent(view: RecyclerView, e: MotionEvent): Boolean {
-        val childView = view.findChildViewUnder(e.x, e.y)
-        if (childView != null) {
-            val childPosition = view.getChildAdapterPosition(childView)
-            val adapter = view.adapter
-            if (adapter is GestureAdapter<*, *>) {
-                val gestureAdapter = adapter as GestureAdapter<T, *>
-                gestureClickListener.setTouchedItem(gestureAdapter.getItem(childPosition), childPosition)
-            }
 
-            if (gestureDetector == null) {
-                gestureDetector = GestureDetector(view.context, gestureClickListener)
-            }
-
-            return gestureDetector?.onTouchEvent(e) ?: false
+        val childView = view.findChildViewUnder(e.x, e.y) ?: return false
+        val childPosition = view.getChildAdapterPosition(childView)
+        if (childPosition == RecyclerView.NO_POSITION) {
+            return false
         }
 
-        return false
+        val adapter = view.adapter
+        if (adapter is GestureAdapter<*, *>) {
+            val gestureAdapter = adapter as GestureAdapter<T, *>
+            gestureClickListener.setTouchedItem(gestureAdapter.getItem(childPosition), childPosition)
+        }
+
+        if (gestureDetector == null) {
+            gestureDetector = GestureDetector(view.context, gestureClickListener)
+        }
+
+        return gestureDetector?.onTouchEvent(e) ?: false
     }
 }
 
