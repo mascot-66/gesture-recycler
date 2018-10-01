@@ -71,7 +71,7 @@ class GestureTouchHelperCallback(private val gestureAdapter: GestureAdapter<*, *
         }
     }
 
-    override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder) {
+    override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
         gestureAdapter.onItemMoved()
         if (viewHolder is GestureViewHolder) {

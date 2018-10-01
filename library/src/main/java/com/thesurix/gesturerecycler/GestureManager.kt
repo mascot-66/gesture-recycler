@@ -26,13 +26,13 @@ class GestureManager {
         adapter.setGestureListener(GestureListener(touchHelper))
 
         if (builder.swipeFlags == INVALID_FLAG) {
-            touchHelperCallback.setSwipeFlagsForLayout(builder.recyclerView.layoutManager)
+            touchHelperCallback.setSwipeFlagsForLayout(builder.recyclerView.layoutManager!!)
         } else {
             touchHelperCallback.swipeFlags = builder.swipeFlags
         }
 
         if (builder.dragFlags == INVALID_FLAG) {
-            touchHelperCallback.setDragFlagsForLayout(builder.recyclerView.layoutManager)
+            touchHelperCallback.setDragFlagsForLayout(builder.recyclerView.layoutManager!!)
         } else {
             touchHelperCallback.dragFlags = builder.dragFlags
         }

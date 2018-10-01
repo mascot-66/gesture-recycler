@@ -195,6 +195,7 @@ See examples.
 * examples with data binding
 * tests
 * header/footer
+* convert examples to kotlin
 
 # Licence
 
