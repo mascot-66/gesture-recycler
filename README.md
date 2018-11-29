@@ -27,7 +27,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.6.0'
+    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.7.0'
 }
 ```
 
@@ -114,6 +114,7 @@ adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>
 adapter.add(month);
 adapter.insert(month, 5);
 adapter.remove(5);
+adapter.swap(2, 5);
 
 // or
 adapter.setData(months, diffUtilCallback)

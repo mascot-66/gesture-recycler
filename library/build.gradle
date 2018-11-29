@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/thesurix/gesture-recycler'
     gitUrl = 'https://github.com/thesurix/gesture-recycler.git'
 
-    libraryVersion = '1.6.0'
+    libraryVersion = '1.7.0'
 
     developerId = 'thesurix'
     developerName = 'Pawel Surowka'
@@ -24,12 +24,6 @@ ext {
     licenseName = 'The Apache Software License, Version 2.0'
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
-}
-
-ext {
-    PUBLISH_GROUP_ID = 'com.thesurix.gesturerecycler'
-    PUBLISH_ARTIFACT_ID = 'gesture-recycler'
-    PUBLISH_VERSION = version
 }
 
 android {
