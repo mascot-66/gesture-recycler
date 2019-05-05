@@ -1,7 +1,7 @@
 package com.thesurix.gesturerecycler
 
 
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.ItemTouchHelper
 
 /**
  * Default gesture listener that handles manual spawned drag gestures.

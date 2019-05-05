@@ -1,11 +1,7 @@
 package com.thesurix.gesturerecycler
 
 
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.recyclerview.widget.*
 
 /**
  * Enum with predefined gesture flags for various layout managers, see [RecyclerView.LayoutManager]

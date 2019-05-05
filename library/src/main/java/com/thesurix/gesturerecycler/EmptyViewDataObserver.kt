@@ -1,7 +1,7 @@
 package com.thesurix.gesturerecycler
 
-import android.support.v7.widget.RecyclerView
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Observer class for managing visibility of the adapter's empty view.

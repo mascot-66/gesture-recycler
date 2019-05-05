@@ -1,10 +1,10 @@
 package com.thesurix.gesturerecycler
 
-import android.support.v4.view.MotionEventCompat
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
+import androidx.core.view.MotionEventCompat
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.thesurix.gesturerecycler.transactions.*
 import com.thesurix.gesturerecycler.util.FixedSizeArrayDequeue
 import java.util.*

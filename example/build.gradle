@@ -21,17 +21,18 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     implementation project(':gesture-recycler')
-    implementation files('libs/glide-full-4.7.0.jar')
-    implementation viewDependencies.butterKnife
-    annotationProcessor viewDependencies.butterKnifeAnnotation
+    implementation exampleDependencies.glide
+    annotationProcessor exampleDependencies.glideCompiler
     implementation supportDependencies.cardView
     implementation supportDependencies.recyclerView
     implementation supportDependencies.appCompat
     implementation supportDependencies.design
     implementation langDependencies.kotlin
-
 }

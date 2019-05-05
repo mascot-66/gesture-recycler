@@ -3,6 +3,10 @@ package com.thesurix.example.gesturerecycler.adapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.thesurix.example.gesturerecycler.R;
+import com.thesurix.example.gesturerecycler.databinding.GridItemBinding;
+import com.thesurix.example.gesturerecycler.databinding.HeaderItemBinding;
+import com.thesurix.example.gesturerecycler.databinding.LinearItemBinding;
+import com.thesurix.example.gesturerecycler.databinding.LinearItemWithBackgroundBinding;
 import com.thesurix.example.gesturerecycler.model.Month;
 import com.thesurix.example.gesturerecycler.model.MonthHeader;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
@@ -10,10 +14,10 @@ import com.thesurix.gesturerecycler.GestureAdapter;
 import com.thesurix.gesturerecycler.GestureViewHolder;
 
 import android.content.Context;
-import android.support.annotation.LayoutRes;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.LayoutRes;
 
 public class MonthsAdapter extends GestureAdapter<MonthItem, GestureViewHolder> {
 
@@ -28,11 +32,19 @@ public class MonthsAdapter extends GestureAdapter<MonthItem, GestureViewHolder> 
     @Override
     public GestureViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         if (viewType == MonthItem.MonthItemType.MONTH.ordinal()) {
-            final View itemView = LayoutInflater.from(parent.getContext()).inflate(mItemResId, parent, false);
-            return new MonthViewHolder(itemView);
+            switch (mItemResId) {
+                case R.layout.linear_item:
+                    return new LinearItemViewHolder(LinearItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+                case R.layout.linear_item_with_background:
+                    return new LinearItemWithBackgroundViewHolder(
+                            LinearItemWithBackgroundBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+                case R.layout.grid_item:
+                    return new GridItemViewHolder(GridItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+                default:
+                    throw new UnsupportedOperationException("Unsupported resource");
+            }
         } else {
-            final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_item, parent, false);
-            return new HeaderViewHolder(itemView);
+            return new HeaderViewHolder(HeaderItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
         }
     }
 
@@ -42,15 +54,18 @@ public class MonthsAdapter extends GestureAdapter<MonthItem, GestureViewHolder> 
         final MonthItem monthItem = getItem(position);
 
         if (monthItem.getType() == MonthItem.MonthItemType.MONTH) {
-            final MonthViewHolder monthViewHolder = (MonthViewHolder) holder;
+            final BaseMonthViewHolder monthViewHolder = (BaseMonthViewHolder) holder;
             final Month month = (Month) monthItem;
-            monthViewHolder.mMonthText.setText(month.getName());
+            monthViewHolder.getMonthText().setText(month.getName());
 
-            Glide.with(mCtx).load(month.getDrawableId()).apply(RequestOptions.centerCropTransform()).into(monthViewHolder.mMonthPicture);
+            Glide.with(mCtx)
+                    .load(month.getDrawableId())
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(monthViewHolder.getMonthPicture());
         } else {
             final HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
             final MonthHeader monthHeader = (MonthHeader) monthItem;
-            headerViewHolder.mHeaderText.setText(monthHeader.getName());
+            headerViewHolder.getHeaderText().setText(monthHeader.getName());
         }
     }
 

@@ -3,9 +3,9 @@ package com.thesurix.example.gesturerecycler.callback;
 
 import com.thesurix.example.gesturerecycler.model.MonthItem;
 
-import android.support.v7.util.DiffUtil;
-
 import java.util.List;
+
+import androidx.recyclerview.widget.DiffUtil;
 
 public class MonthDiffCallback extends DiffUtil.Callback {
 

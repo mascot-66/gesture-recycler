@@ -1,8 +1,8 @@
 package com.thesurix.gesturerecycler
 
-import android.support.v7.widget.RecyclerView
 import android.view.GestureDetector
 import android.view.MotionEvent
+import androidx.recyclerview.widget.RecyclerView
 
 /**
  * Class that is responsible for handling item touch events.

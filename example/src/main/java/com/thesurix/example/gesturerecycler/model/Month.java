@@ -1,7 +1,7 @@
 package com.thesurix.example.gesturerecycler.model;
 
 
-import android.support.annotation.DrawableRes;
+import androidx.annotation.DrawableRes;
 
 public class Month implements MonthItem {
 

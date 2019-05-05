@@ -1,5 +1,7 @@
 package com.thesurix.example.gesturerecycler.fragment;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import com.thesurix.example.gesturerecycler.R;
 import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
 import com.thesurix.example.gesturerecycler.callback.MonthDiffCallback;
@@ -12,10 +14,6 @@ import com.thesurix.gesturerecycler.GestureManager;
 import android.animation.FloatEvaluator;
 import android.animation.ValueAnimator;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -26,6 +24,10 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class EmptyViewFragment extends BaseFragment {
 

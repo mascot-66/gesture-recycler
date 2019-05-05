@@ -1,12 +1,8 @@
 package com.thesurix.gesturerecycler
 
 import android.graphics.Canvas
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
+import androidx.recyclerview.widget.*
 import com.thesurix.gesturerecycler.LayoutFlags.*
 
 /**

@@ -1,5 +1,7 @@
 package com.thesurix.example.gesturerecycler.fragment;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import com.thesurix.example.gesturerecycler.R;
 import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter;
 import com.thesurix.example.gesturerecycler.model.MonthItem;
@@ -9,11 +11,11 @@ import com.thesurix.gesturerecycler.GestureManager;
 import com.thesurix.gesturerecycler.RecyclerItemTouchListener;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.GridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
 
 public class GridRecyclerFragment extends BaseFragment {
 
