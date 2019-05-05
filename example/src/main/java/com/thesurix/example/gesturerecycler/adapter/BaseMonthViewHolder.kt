@@ -29,33 +29,39 @@ abstract class  BaseMonthViewHolder(rootView: View) : GestureViewHolder(rootView
     override fun onItemSelect() {
         val textColorFrom = ContextCompat.getColor(itemView.context, android.R.color.white)
         val textColorTo = ContextCompat.getColor(itemView.context, R.color.indigo_500)
-        val textAnimation = ValueAnimator.ofObject(ArgbEvaluator(), textColorFrom, textColorTo)
-        textAnimation.duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
-        textAnimation.addUpdateListener(getTextAnimatorListener(monthText, textAnimation))
-        textAnimation.start()
+        ValueAnimator.ofObject(ArgbEvaluator(), textColorFrom, textColorTo).apply {
+            duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
+            addUpdateListener(getTextAnimatorListener(monthText, this))
+            start()
+        }
+
 
         val backgroundColorFrom = ContextCompat.getColor(itemView.context, R.color.indigo_500)
         val backgroundColorTo = ContextCompat.getColor(itemView.context, android.R.color.white)
-        val backgroundAnimation = ValueAnimator.ofObject(ArgbEvaluator(), backgroundColorFrom, backgroundColorTo)
-        backgroundAnimation.duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
-        backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(monthText, backgroundAnimation))
-        backgroundAnimation.start()
+        ValueAnimator.ofObject(ArgbEvaluator(), backgroundColorFrom, backgroundColorTo).apply {
+            duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
+            addUpdateListener(getBackgroundAnimatorListener(monthText, this))
+            start()
+        }
     }
 
     override fun onItemClear() {
         val textColorFrom = ContextCompat.getColor(itemView.context, R.color.indigo_500)
         val textColorTo = ContextCompat.getColor(itemView.context, android.R.color.white)
-        val textAnimation = ValueAnimator.ofObject(ArgbEvaluator(), textColorFrom, textColorTo)
-        textAnimation.duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
-        textAnimation.addUpdateListener(getTextAnimatorListener(monthText, textAnimation))
-        textAnimation.start()
+        ValueAnimator.ofObject(ArgbEvaluator(), textColorFrom, textColorTo).apply {
+            duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
+            addUpdateListener(getTextAnimatorListener(monthText, this))
+            start()
+        }
+
 
         val backgroundColorFrom = ContextCompat.getColor(itemView.context, android.R.color.white)
         val backgroundColorTo = ContextCompat.getColor(itemView.context, R.color.indigo_500)
-        val backgroundAnimation = ValueAnimator.ofObject(ArgbEvaluator(), backgroundColorFrom, backgroundColorTo)
-        backgroundAnimation.duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
-        backgroundAnimation.addUpdateListener(getBackgroundAnimatorListener(monthText, backgroundAnimation))
-        backgroundAnimation.start()
+        ValueAnimator.ofObject(ArgbEvaluator(), backgroundColorFrom, backgroundColorTo).apply {
+            duration = itemView.context.resources.getInteger(R.integer.animation_speed_ms).toLong()
+            addUpdateListener(getBackgroundAnimatorListener(monthText, this))
+            start()
+        }
     }
 
     override fun canDrag() = true
