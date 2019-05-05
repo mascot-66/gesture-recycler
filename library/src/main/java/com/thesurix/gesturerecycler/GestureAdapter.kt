@@ -2,7 +2,6 @@ package com.thesurix.gesturerecycler
 
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.view.MotionEventCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.thesurix.gesturerecycler.transactions.*
@@ -102,7 +101,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
             if (manualDragAllowed && holder.canDrag()) {
                 holder.showDraggableView()
                 holder.draggableView?.setOnTouchListener { _, motionEvent ->
-                    if (MotionEventCompat.getActionMasked(motionEvent) == MotionEvent.ACTION_DOWN) {
+                    if (motionEvent.action == MotionEvent.ACTION_DOWN) {
                         gestureListener?.onStartDrag(holder)
                     }
 
