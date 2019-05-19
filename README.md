@@ -27,7 +27,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    compile 'com.thesurix.gesturerecycler:gesture-recycler:1.7.0'
+    implementation 'com.thesurix.gesturerecycler:gesture-recycler:1.8.0'
 }
 ```
 
@@ -197,6 +197,7 @@ See examples.
 * tests
 * header/footer
 * convert examples to kotlin
+* different layouts for different swipe directions
 
 # Licence
 
