@@ -30,6 +30,6 @@ class StartActivity : AppCompatActivity() {
     }
 
     private fun startRecyclerActivity(option: RecyclerActivity.RecyclerOption) {
-        startActivity(RecyclerActivity.getIntent(this@StartActivity, option))
+        startActivity(getIntent(this@StartActivity, option))
     }
 }

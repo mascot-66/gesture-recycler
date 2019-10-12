@@ -11,9 +11,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.thesurix.example.gesturerecycler.R
 import com.thesurix.example.gesturerecycler.model.Month
+import com.thesurix.example.gesturerecycler.model.MonthItem
 import com.thesurix.gesturerecycler.GestureViewHolder
 
-abstract class BaseMonthViewHolder(rootView: View) : GestureViewHolder<Month>(rootView) {
+abstract class BaseMonthViewHolder(rootView: View) : GestureViewHolder<MonthItem>(rootView) {
     protected abstract val monthText: TextView
     protected abstract val monthPicture: ImageView
     protected abstract val itemDrag: ImageView
@@ -29,12 +30,14 @@ abstract class BaseMonthViewHolder(rootView: View) : GestureViewHolder<Month>(ro
     override val backgroundView: View?
         get() = background
 
-    override fun bind(item: Month) {
-        monthText.text = item.name
-        Glide.with(itemView.context)
-                .load(item.drawableId)
-                .apply(RequestOptions.centerCropTransform())
-                .into(monthPicture)
+    override fun bind(item: MonthItem) {
+        if (item is Month) {
+            monthText.text = item.name
+            Glide.with(itemView.context)
+                    .load(item.drawableId)
+                    .apply(RequestOptions.centerCropTransform())
+                    .into(monthPicture)
+        }
     }
 
     override fun onItemSelect() {
