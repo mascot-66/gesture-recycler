@@ -7,15 +7,18 @@ import android.view.ViewStub
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.thesurix.example.gesturerecycler.R
+import com.thesurix.example.gesturerecycler.model.Month
 import com.thesurix.gesturerecycler.GestureViewHolder
 
-abstract class  BaseMonthViewHolder(rootView: View) : GestureViewHolder(rootView) {
-    abstract val monthText: TextView
-    abstract val monthPicture: ImageView
-    abstract val itemDrag: ImageView
-    abstract val foreground: View?
-    abstract val background: ViewStub?
+abstract class BaseMonthViewHolder(rootView: View) : GestureViewHolder<Month>(rootView) {
+    protected abstract val monthText: TextView
+    protected abstract val monthPicture: ImageView
+    protected abstract val itemDrag: ImageView
+    protected abstract val foreground: View?
+    protected abstract val background: ViewStub?
 
     override val draggableView: View?
         get() = itemDrag
@@ -25,6 +28,14 @@ abstract class  BaseMonthViewHolder(rootView: View) : GestureViewHolder(rootView
 
     override val backgroundView: View?
         get() = background
+
+    override fun bind(item: Month) {
+        monthText.text = item.name
+        Glide.with(itemView.context)
+                .load(item.drawableId)
+                .apply(RequestOptions.centerCropTransform())
+                .into(monthPicture)
+    }
 
     override fun onItemSelect() {
         val textColorFrom = ContextCompat.getColor(itemView.context, android.R.color.white)

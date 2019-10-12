@@ -30,8 +30,8 @@ class GestureTouchHelperCallback(private val gestureAdapter: GestureAdapter<*, *
     var swipeFlags = ItemTouchHelper.RIGHT
 
     override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-        val holder = viewHolder as GestureViewHolder
-        return ItemTouchHelper.Callback.makeMovementFlags(if (holder.canDrag()) dragFlags else 0, if (holder.canSwipe()) swipeFlags else 0)
+        val holder = viewHolder as GestureViewHolder<*>
+        return makeMovementFlags(if (holder.canDrag()) dragFlags else 0, if (holder.canSwipe()) swipeFlags else 0)
     }
 
     override fun onMove(recyclerView: RecyclerView, source: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -44,7 +44,7 @@ class GestureTouchHelperCallback(private val gestureAdapter: GestureAdapter<*, *
 
     override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
-        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE && viewHolder is GestureViewHolder) {
+        if (actionState != ItemTouchHelper.ACTION_STATE_IDLE && viewHolder is GestureViewHolder<*>) {
             val backgroundView = viewHolder.backgroundView
             backgroundView?.let {
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
@@ -60,8 +60,8 @@ class GestureTouchHelperCallback(private val gestureAdapter: GestureAdapter<*, *
                              actionState: Int, isCurrentlyActive: Boolean) {
         when(actionState) {
             ItemTouchHelper.ACTION_STATE_SWIPE -> {
-                val foregroundView = (viewHolder as GestureViewHolder).foregroundView
-                ItemTouchHelper.Callback.getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive)
+                val foregroundView = (viewHolder as GestureViewHolder<*>).foregroundView
+                getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive)
             }
             else -> super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
         }
@@ -70,14 +70,14 @@ class GestureTouchHelperCallback(private val gestureAdapter: GestureAdapter<*, *
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
         gestureAdapter.onItemMoved()
-        if (viewHolder is GestureViewHolder) {
+        if (viewHolder is GestureViewHolder<*>) {
             viewHolder.onItemClear()
 
             val backgroundView = viewHolder.backgroundView
             backgroundView?.visibility = View.GONE
 
             val foregroundView = viewHolder.foregroundView
-            ItemTouchHelper.Callback.getDefaultUIUtil().clearView(foregroundView)
+            getDefaultUIUtil().clearView(foregroundView)
         }
     }
 

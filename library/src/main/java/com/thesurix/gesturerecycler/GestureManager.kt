@@ -14,7 +14,7 @@ class GestureManager {
     private val touchHelperCallback: GestureTouchHelperCallback
 
     private constructor(builder: Builder) {
-        val adapter = builder.recyclerView.adapter as GestureAdapter<*, *>
+        val adapter = builder.recyclerView.adapter as GestureAdapter<Any, *>
         touchHelperCallback = GestureTouchHelperCallback(adapter).apply {
             swipeEnabled = builder.isSwipeEnabled
             longPressDragEnabled = builder.isDragEnabled

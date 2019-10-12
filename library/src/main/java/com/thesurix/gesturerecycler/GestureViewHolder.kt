@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
  * Base view holder class for gesture compatible items.
  * @author thesurix
  */
-abstract class GestureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+abstract class GestureViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     /**
      * Returns view that can spawn drag gesture. If there is no view simply return null.
@@ -46,6 +46,17 @@ abstract class GestureViewHolder(itemView: View) : RecyclerView.ViewHolder(itemV
     fun hideDraggableView() {
         draggableView?.visibility = View.GONE
     }
+
+    /**
+     * This method delegates bind logic into your ViewHolder.
+     * @param item model from adapter's data collection
+     * */
+    open fun bind(item: T) {}
+
+    /**
+     * Indicates that ViewHolder is ready to recycle itself.
+     */
+    open fun recycle() {}
 
     /**
      * Indicates that view is selected.

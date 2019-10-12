@@ -14,7 +14,7 @@ private const val INVALID_DRAG_POS = -1
  * Base adapter for gesture recognition, extends this to provide own implementation. T is the data type, K is the ViewHolder type.
  * @author thesurix
  */
-abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K>(), Transactional<T> {
+abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapter<K>(), Transactional<T> {
 
     /** Temp item for swap action  */
     private var swappedItem: T? = null
@@ -27,7 +27,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
     /** This variable holds stack of data transactions for undo purposes  */
     private var transactions = FixedSizeArrayDequeue<Transaction<T>>(1)
 
-    private var gestureListener: OnGestureListener? = null
+    private var gestureListener: OnGestureListener<T>? = null
     private var dataChangeListener: OnDataChangeListener<T>? = null
     private val emptyViewDataObserver = EmptyViewDataObserver()
     private val attachListener = object : View.OnAttachStateChangeListener {
@@ -87,13 +87,18 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
     }
 
     /** Listener for gestures  */
-    internal interface OnGestureListener {
+    internal interface OnGestureListener<T> {
 
         /**
          * Called when view holder item has pending drag gesture.
          * @param viewHolder dragged view holder item
          */
-        fun onStartDrag(viewHolder: GestureViewHolder)
+        fun onStartDrag(viewHolder: GestureViewHolder<T>)
+    }
+
+    override fun onBindViewHolder(holder: K, position: Int, payloads: MutableList<Any>) {
+        holder.bind(_data[position])
+        super.onBindViewHolder(holder, position, payloads)
     }
 
     override fun onBindViewHolder(holder: K, position: Int) {
@@ -110,6 +115,12 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
             } else {
                 holder.hideDraggableView()
             }
+        }
+    }
+
+    override fun onViewRecycled(holder: K) {
+        if (holder.isRecyclable) {
+            holder.recycle()
         }
     }
 
@@ -273,9 +284,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * @param size undo actions size
      */
     fun setUndoSize(size: Int) {
-        if (size < 0) {
-            throw IllegalArgumentException("Stack can not have negative size.")
-        }
+        require(size >= 0) { "Stack can not have negative size." }
         transactions = FixedSizeArrayDequeue(size)
     }
 
@@ -301,7 +310,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder> : RecyclerView.Adapter<K
      * Sets adapter gesture listener.
      * @param listener gesture listener
      */
-    internal fun setGestureListener(listener: OnGestureListener) {
+    internal fun setGestureListener(listener: OnGestureListener<T>) {
         gestureListener = listener
     }
 
