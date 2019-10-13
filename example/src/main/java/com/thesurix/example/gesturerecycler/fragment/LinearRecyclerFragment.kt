@@ -44,8 +44,12 @@ class LinearRecyclerFragment : BaseFragment() {
             }
         }))
 
-        gestureManager = GestureManager.Builder(recyclerView).setSwipeEnabled(true).setLongPressDragEnabled(true)
-                .setSwipeFlags(ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT).setDragFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN).build()
+        gestureManager = GestureManager.Builder(recyclerView)
+                .setSwipeEnabled(true)
+                .setLongPressDragEnabled(true)
+                .setSwipeFlags(ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+                .setDragFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN)
+                .build()
 
         adapter.setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
             override fun onItemRemoved(item: MonthItem, position: Int) {

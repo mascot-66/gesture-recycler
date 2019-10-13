@@ -33,21 +33,21 @@ dependencies {
 
 # How to use?
 
-```java
+```kotlin
 // Define your RecyclerView and adapter as usually
-final LinearLayoutManager manager = new LinearLayoutManager(getContext());
-recyclerView.setHasFixedSize(true);
-recyclerView.setLayoutManager(manager);
+val manager = LinearLayoutManager(context)
+recyclerView.setHasFixedSize(true)
+recyclerView.layoutManager = manager
 
 // Extend GestureAdapter and write your own
 // ViewHolder items must extend GestureViewHolder
-final MonthsAdapter adapter = new MonthsAdapter(getContext(), R.layout.linear_item);
-adapter.setData(getMonths());
-recyclerView.setAdapter(adapter);
+val adapter = MonthsAdapter(R.layout.linear_item)
+adapter.data = months
+recyclerView.adapter = adapter
 ```
 ### Swipe and drag & drop support:
-```java
-GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
+```kotlin
+val gestureManager = GestureManager.Builder(recyclerView)
                  // Enable swipe
                 .setSwipeEnabled(true)
                  // Enable long press drag and drop 
@@ -56,9 +56,9 @@ GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
                 .setManualDragEnabled(true)
                  // Use custom gesture flags
                  // Do not use those methods if you want predefined flags for RecyclerView layout manager 
-                .setSwipeFlags(ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
-                .setDragFlags(ItemTouchHelper.UP | ItemTouchHelper.DOWN)
-                .build();
+                .setSwipeFlags(ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+                .setDragFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN)
+                .build()
 ```
 ### Background view for swipeable items:
 ```xml
@@ -84,66 +84,58 @@ GestureManager gestureManager = new GestureManager.Builder(mRecyclerView)
     </LinearLayout>
 </FrameLayout>
 ```
-```java
-    // Override getForegroundView(), getBackgroundView() methods in ViewHolder to provide top and bottom view
-    @Override
-    public View getForegroundView() {
-        return mForegroundView; // This view comes from R.id.foreground_view
-    }
-
-    @Override
-    public View getBackgroundView() {
-        return mBackgroundView; // This view comes from R.id.background_view_stub
-    }
+```kotlin
+    // Override foregroundView, backgroundView() variables in ViewHolder to provide top and bottom view
+    open val foregroundView: View
+            get() = foregound
+            
+    open val backgroundView: View?
+            get() = background
 ```
 ### Data callbacks:
-```java
-adapter.setDataChangeListener(new GestureAdapter.OnDataChangeListener<MonthItem>() {
-            @Override
-            public void onItemRemoved(final MonthItem item, final int position) {
-            }
-
-            @Override
-            public void onItemReorder(final MonthItem item, final int fromPos, final int toPos) {
-            }
-        });
+```kotlin
+adapter.setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
+                        override fun onItemRemoved(item: MonthItem, position: Int) {
+                        }
+        
+                        override fun onItemReorder(item: MonthItem, fromPos: Int, toPos: Int) {
+                        }
+                    })
 ```
 ### Data animations:
-```java
+```kotlin
 // Support for data animations
-adapter.add(month);
-adapter.insert(month, 5);
-adapter.remove(5);
-adapter.swap(2, 5);
+adapter.add(month)
+adapter.insert(month, 5)
+adapter.remove(5)
+adapter.swap(2, 5)
 
 // or
 adapter.setData(months, diffUtilCallback)
 
 // This will interrupt pending animations
-adapter.setData(months)
+adapter.data = months
 
 ```
 ### Item click events:
 
-```java
+```kotlin
 // Attach DefaultItemClickListener or implement RecyclerItemTouchListener.ItemClickListener
-recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultItemClickListener<CustomItem>() {
-            @Override
-            public boolean onItemClick(final CustomItem item, final int position) {
+recyclerView.addOnItemTouchListener(RecyclerItemTouchListener(object : DefaultItemClickListener<MonthItem>() {
+
+            override fun onItemClick(item: MonthItem, position: Int): Boolean {
                 // return true if the event is consumed
-                return false;
+                return true
             }
 
-            @Override
-            public void onItemLongPress(final CustomItem item, final int position) {
+            override fun onItemLongPress(item: MonthItem, position: Int) {
             }
 
-            @Override
-            public boolean onDoubleTap(final CustomItem item, final int position) {
+            override fun onDoubleTap(item: MonthItem, position: Int): Boolean {
                 // return true if the event is consumed
-                return false;
+                return true
             }
-        }));
+        }))
 ```
 ### Empty view:
 ```xml
@@ -166,43 +158,40 @@ recyclerView.addOnItemTouchListener(new RecyclerItemTouchListener<>(new DefaultI
         android:text="No data"/>
 </FrameLayout>
 ```
-```java
+```kotlin
 // Pass null to disable empty view
-final View emptyView = view.findViewById(R.id.empty_view);
-adapter.setEmptyView(emptyView);
+val emptyView = view.findViewById(R.id.empty_view)
+adapter.setEmptyView(emptyView)
 
 // or use callback
-adapter.setEmptyViewVisibilityListener(new EmptyViewVisibilityListener() {
-            @Override
-            public void onVisibilityChanged(final boolean visible) {
+adapter.setEmptyViewVisibilityListener(object : EmptyViewVisibilityListener {
+            override fun onVisibilityChanged(visible: Boolean) {
                 // show/hide emptyView with animation
             }
-       });
+        })
 ```
 ### Undo:
-```java
+```kotlin
 // Undo last data transaction (add, insert, remove, swipe, reorder)
-adapter.undoLast();
+adapter.undoLast()
 
 // Set undo stack size
-adapter.setUndoSize(2);
+adapter.setUndoSize(2)
 ```
 
 # Help
 See examples.
 
 # To do
-* bindable ViewHolder
 * examples with data binding
 * tests
 * header/footer
-* convert examples to kotlin
 * different layouts for different swipe directions
 
 # Licence
 
 ```
-Copyright 2018 thesurix
+Copyright 2019 thesurix
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

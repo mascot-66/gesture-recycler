@@ -74,7 +74,11 @@ class EmptyViewFragment : BaseFragment() {
 
         recyclerView.adapter = adapter
 
-        gestureManager = GestureManager.Builder(recyclerView).setSwipeEnabled(true).setSwipeFlags(ItemTouchHelper.LEFT).setLongPressDragEnabled(true).build()
+        gestureManager = GestureManager.Builder(recyclerView)
+                .setSwipeEnabled(true)
+                .setSwipeFlags(ItemTouchHelper.LEFT)
+                .setLongPressDragEnabled(true)
+                .build()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {

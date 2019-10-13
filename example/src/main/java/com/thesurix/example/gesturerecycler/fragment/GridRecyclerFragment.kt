@@ -49,7 +49,10 @@ class GridRecyclerFragment : BaseFragment() {
             }
         }
 
-        gestureManager = GestureManager.Builder(recyclerView).setSwipeEnabled(true).setLongPressDragEnabled(true).build()
+        gestureManager = GestureManager.Builder(recyclerView)
+                .setSwipeEnabled(true)
+                .setLongPressDragEnabled(true)
+                .build()
 
         adapter.setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
             override fun onItemRemoved(item: MonthItem, position: Int) {
