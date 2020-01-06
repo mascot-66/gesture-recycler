@@ -81,7 +81,7 @@ class EmptyViewFragment : BaseFragment() {
                 .build()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.recycler_empty_menu, menu)
     }
 

@@ -45,7 +45,7 @@ open class BaseFragment : Fragment() {
         return recyclerView
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.recycler_menu, menu)
     }
 }
