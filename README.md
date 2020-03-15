@@ -192,7 +192,7 @@ See examples.
 # Licence
 
 ```
-Copyright 2019 thesurix
+Copyright 2020 thesurix
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
