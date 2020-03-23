@@ -6,7 +6,8 @@ import com.thesurix.gesturerecycler.util.swap
  * @author thesurix
  */
 class SwapTransaction<T>(private val firstIndex: Int,
-                         private val secondIndex: Int) : Transaction<T> {
+                         private val secondIndex: Int,
+                         private val headerEnabled: Boolean) : Transaction<T> {
 
     override fun perform(transactional: Transactional<T>): Boolean {
         transactional.data.swap(firstIndex, secondIndex)
@@ -21,7 +22,8 @@ class SwapTransaction<T>(private val firstIndex: Int,
     }
 
     private fun notifyChanged(transactional: Transactional<T>) {
-        transactional.notifyChanged(firstIndex)
-        transactional.notifyChanged(secondIndex)
+        val changedOffset = + if(headerEnabled) 1 else 0
+        transactional.notifyChanged(firstIndex + changedOffset)
+        transactional.notifyChanged(secondIndex + changedOffset)
     }
 }

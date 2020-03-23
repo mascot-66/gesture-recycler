@@ -4,7 +4,7 @@
     android:layout_height="@dimen/hf_item_height"
     android:background="@drawable/rectangle_background"
     android:gravity="center"
-    android:text="@string/header"
+    android:text="@string/footer"
     android:textSize="@dimen/hf_text_size"
     android:textColor="@android:color/white"
     android:textStyle="bold"

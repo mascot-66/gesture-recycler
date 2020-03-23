@@ -36,6 +36,9 @@ class GestureManager {
         } else {
             touchHelperCallback.dragFlags = builder.dragFlags
         }
+
+        adapter.setHeaderEnabled(builder.isHeaderEnabled)
+        adapter.setFooterEnabled(builder.isFooterEnabled)
     }
 
     /**
@@ -95,6 +98,10 @@ class GestureManager {
         internal var isDragEnabled = false
             private set
         internal var isManualDragEnabled = false
+            private set
+        internal var isHeaderEnabled = false
+            private set
+        internal var isFooterEnabled = false
             private set
 
         /**
@@ -165,6 +172,31 @@ class GestureManager {
          */
         fun setDragFlags(flags: Int): Builder {
             dragFlags = flags
+            return this
+        }
+
+
+        /**
+         * Sets header item enabled or disabled. If enabled then [RecyclerView.Adapter.onCreateViewHolder]
+         * will get [TYPE_HEADER_ITEM] as a viewType argument.
+         * Header is disabled by default.
+         * @param enabled true to enable, false to disable
+         * @return returns builder instance
+         */
+        fun setHeaderEnabled(enabled: Boolean): Builder {
+            isHeaderEnabled = enabled
+            return this
+        }
+
+        /**
+         * Sets footer item enabled or disabled. If enabled then [RecyclerView.Adapter.onCreateViewHolder]
+         * will get [TYPE_FOOTER_ITEM] as a viewType argument.
+         * Footer is disabled by default.
+         * @param enabled true to enable, false to disable
+         * @return returns builder instance
+         */
+        fun setFooterEnabled(enabled: Boolean): Builder {
+            isFooterEnabled = enabled
             return this
         }
 

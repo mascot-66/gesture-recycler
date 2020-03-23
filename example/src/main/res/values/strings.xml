@@ -13,4 +13,8 @@
     <string name="menu_clear_data">Clear data</string>
     <string name="menu_undo_data">Undo last</string>
     <string name="menu_diff_data">Diff data</string>
+    <string name="menu_toggle_hf">Toggle footer/header</string>
+
+    <string name="header">HEADER</string>
+    <string name="footer">FOOTER</string>
 </resources>

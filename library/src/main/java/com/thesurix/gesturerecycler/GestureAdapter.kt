@@ -6,14 +6,17 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.thesurix.gesturerecycler.transactions.*
 import com.thesurix.gesturerecycler.util.FixedSizeArrayDequeue
+import com.thesurix.gesturerecycler.util.getDataOffset
 import java.util.*
-
-private const val INVALID_DRAG_POS = -1
+import kotlin.math.abs
 
 /**
  * Base adapter for gesture recognition, extends this to provide own implementation. T is the data type, K is the ViewHolder type.
  * @author thesurix
  */
+private const val INVALID_DRAG_POS = -1
+const val TYPE_HEADER_ITEM = 456789
+const val TYPE_FOOTER_ITEM = TYPE_HEADER_ITEM + 1
 abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapter<K>(), Transactional<T> {
 
     /** Temp item for swap action  */
@@ -24,6 +27,10 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
     private var stopDragPos = INVALID_DRAG_POS
     /** Flag that defines if adapter allows manual dragging  */
     private var manualDragAllowed = false
+    /** Flag that defines if header item is enabled */
+    private var headerEnabled = false
+    /** Flag that defines if footer item is enabled */
+    private var footerEnabled = false
     /** This variable holds stack of data transactions for undo purposes  */
     private var transactions = FixedSizeArrayDequeue<Transaction<T>>(1)
 
@@ -51,7 +58,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
     }
 
     /** Collection for adapter's data  */
-    private val _data = ArrayList<T>()
+    private val _data = mutableListOf<T>()
 
     /**
      * Returns adapter's data.
@@ -96,8 +103,25 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
         fun onStartDrag(viewHolder: GestureViewHolder<T>)
     }
 
+    override fun getItemViewType(viewPosition: Int): Int {
+        if (headerEnabled && viewPosition == 0) {
+            return TYPE_HEADER_ITEM
+        }
+
+        val dataSize = if (headerEnabled) _data.size + 1 else _data.size
+        if (footerEnabled && viewPosition == dataSize) {
+            return TYPE_FOOTER_ITEM
+        }
+        return super.getItemViewType(viewPosition)
+    }
+
     override fun onBindViewHolder(holder: K, position: Int, payloads: MutableList<Any>) {
-        holder.bind(_data[position])
+        val viewType = getItemViewType(position)
+        if (viewType == TYPE_HEADER_ITEM || viewType == TYPE_FOOTER_ITEM) {
+            return
+        }
+
+        holder.bind(getItemByViewPosition(position))
         super.onBindViewHolder(holder, position, payloads)
     }
 
@@ -125,7 +149,11 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
     }
 
     override fun getItemCount(): Int {
-        return _data.size
+        return when {
+            headerEnabled && footerEnabled -> _data.size + 2
+            headerEnabled || footerEnabled -> _data.size + 1
+            else -> _data.size
+        }
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -197,12 +225,22 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
     }
 
     /**
+     * Returns item for the given view position.
+     * @param position view position
+     * @return item
+     */
+    fun getItemByViewPosition(position: Int): T {
+        val dataPosition = position + getDataOffset(headerEnabled)
+        return _data[dataPosition]
+    }
+
+    /**
      * Adds item to the adapter.
      * @param item item to add
      * @return true if added, false otherwise
      */
     fun add(item: T): Boolean {
-        val addTransaction = AddTransaction(item)
+        val addTransaction = AddTransaction(item, headerEnabled)
         val success = addTransaction.perform(this)
 
         transactions.offer(addTransaction)
@@ -215,7 +253,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
      * @return true if removed, false otherwise
      */
     fun remove(position: Int): Boolean {
-        val removeTransaction = RemoveTransaction<T>(position)
+        val removeTransaction = RemoveTransaction<T>(position, headerEnabled)
         val success = removeTransaction.perform(this)
 
         transactions.offer(removeTransaction)
@@ -228,7 +266,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
      * @param position position for the item
      */
     fun insert(item: T, position: Int) {
-        val insertTransaction = InsertTransaction(item, position)
+        val insertTransaction = InsertTransaction(item, position, headerEnabled)
         insertTransaction.perform(this)
 
         transactions.offer(insertTransaction)
@@ -241,7 +279,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
      * @return true if moved, false otherwise
      */
     fun move(fromPosition: Int, toPosition: Int): Boolean {
-        val moveTransaction = MoveTransaction<T>(fromPosition, toPosition)
+        val moveTransaction = MoveTransaction<T>(fromPosition, toPosition, headerEnabled)
         val success = moveTransaction.perform(this)
 
         transactions.offer(moveTransaction)
@@ -255,7 +293,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
      * @return true if swapped, false otherwise
      */
     fun swap(firstPosition: Int, secondPosition: Int): Boolean {
-        val swapTransaction = SwapTransaction<T>(firstPosition, secondPosition)
+        val swapTransaction = SwapTransaction<T>(firstPosition, secondPosition, headerEnabled)
         val success = swapTransaction.perform(this)
 
         transactions.offer(swapTransaction)
@@ -307,6 +345,28 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
     }
 
     /**
+     * Sets header item state.
+     * @param enabled true to enable, false to disable
+     */
+    fun setHeaderEnabled(enabled: Boolean) {
+        if (headerEnabled != enabled) {
+            headerEnabled = enabled
+            notifyDataSetChanged()
+        }
+    }
+
+    /**
+     * Sets footer item state.
+     * @param enabled true to enable, false to disable
+     */
+    fun setFooterEnabled(enabled: Boolean) {
+        if (footerEnabled != enabled) {
+            footerEnabled = enabled
+            notifyDataSetChanged()
+        }
+    }
+
+    /**
      * Sets adapter gesture listener.
      * @param listener gesture listener
      */
@@ -316,41 +376,49 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
 
     /**
      * Dismisses item from the given position.
-     * @param position item's position
+     * @param viewPosition dismissed item position
      */
-    internal fun onItemDismissed(position: Int) {
-        val removedItem = _data[position]
-        val wasRemoved = remove(position)
+    internal fun onItemDismissed(viewPosition: Int) {
+        val dataRemovePosition = viewPosition + getDataOffset(headerEnabled)
+        val removedItem = _data[dataRemovePosition]
+        val wasRemoved = remove(dataRemovePosition)
         if (wasRemoved) {
-            dataChangeListener?.onItemRemoved(removedItem, position)
+            dataChangeListener?.onItemRemoved(removedItem, dataRemovePosition)
         }
     }
 
     /**
      * Moves item from one position to another.
-     * @param fromPosition start position
-     * @param toPosition end position
+     * @param fromPosition view start position
+     * @param toPosition view end position
      * @return returns true if transition is successful
      */
     internal fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        if (swappedItem == null) {
-            startDragPos = fromPosition
-            swappedItem = _data[fromPosition]
+        val viewType = getItemViewType(toPosition)
+        if (viewType == TYPE_HEADER_ITEM || viewType == TYPE_FOOTER_ITEM) {
+            return false
         }
-        stopDragPos = toPosition
+
+        val dataFromPosition = fromPosition + getDataOffset(headerEnabled)
+        val dataToPosition = toPosition + getDataOffset(headerEnabled)
+        if (swappedItem == null) {
+            startDragPos = dataFromPosition
+            swappedItem = _data[dataFromPosition]
+        }
+        stopDragPos = dataToPosition
 
         // Steps bigger than one we have to swap manually in right order
-        val jumpSize = Math.abs(toPosition - fromPosition)
+        val jumpSize = abs(toPosition - fromPosition)
         if (jumpSize > 1) {
             val sign = Integer.signum(toPosition - fromPosition)
-            var startPos = fromPosition
+            var startPos = dataFromPosition
             for (i in 0 until jumpSize) {
                 val endPos = startPos + sign
                 Collections.swap(_data, startPos, endPos)
                 startPos += sign
             }
         } else {
-            Collections.swap(_data, fromPosition, toPosition)
+            Collections.swap(_data, dataFromPosition, dataToPosition)
         }
         notifyItemMoved(fromPosition, toPosition)
         return true
@@ -364,7 +432,7 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
             if (stopDragPos != INVALID_DRAG_POS) {
                 dataChangeListener?.onItemReorder(it, startDragPos, stopDragPos)
 
-                val revertReorderTransaction = RevertReorderTransaction<T>(startDragPos, stopDragPos)
+                val revertReorderTransaction = RevertReorderTransaction<T>(startDragPos, stopDragPos, headerEnabled)
                 transactions.offer(revertReorderTransaction)
                 swappedItem = null
                 stopDragPos = INVALID_DRAG_POS
@@ -391,3 +459,4 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
         transactions.clear()
     }
 }
+

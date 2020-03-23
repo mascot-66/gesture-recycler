@@ -18,4 +18,6 @@
         android:title="@string/menu_diff_data"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/toggle_hf"
+        android:title="@string/menu_toggle_hf"/>
 </menu>

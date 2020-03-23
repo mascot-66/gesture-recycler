@@ -9,6 +9,7 @@
     <dimen name="main_btn_height">80dp</dimen>
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="card_elevation">6dp</dimen>
+    <dimen name="rectangle_corner_radius">4dp</dimen>
 
     <!-- Drag view -->
     <dimen name="drag_view_size">40dp</dimen>
@@ -30,4 +31,10 @@
     <!-- Remove item -->
     <dimen name="remove_item_icon_size">52dp</dimen>
     <dimen name="remove_item_padding">10dp</dimen>
+
+    <!-- Header/Footer -->
+    <dimen name="hf_item_height">48dp</dimen>
+    <dimen name="hf_text_size">24sp</dimen>
+    <dimen name="hf_margin">4dp</dimen>
+
 </resources>

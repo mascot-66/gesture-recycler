@@ -4,7 +4,8 @@ package com.thesurix.gesturerecycler.transactions
 /**
  * @author thesurix
  */
-class RemoveTransaction<T>(private val position: Int) : Transaction<T> {
+class RemoveTransaction<T>(private val position: Int,
+                           private val headerEnabled: Boolean) : Transaction<T> {
     private var item: T? = null
 
     override fun perform(transactional: Transactional<T>): Boolean {
@@ -12,7 +13,7 @@ class RemoveTransaction<T>(private val position: Int) : Transaction<T> {
             val removedItem = removeAt(position)
             removedItem?.let {
                 item = it
-                transactional.notifyRemoved(position)
+                transactional.notifyRemoved(position + if(headerEnabled) 1 else 0)
                 true
             } ?: false
         }
@@ -22,7 +23,7 @@ class RemoveTransaction<T>(private val position: Int) : Transaction<T> {
         return with(transactional.data) {
             item?.let {
                 add(position, it)
-                transactional.notifyInserted(position)
+                transactional.notifyInserted(position + if(headerEnabled) 1 else 0)
                 true
             } ?: false
         }

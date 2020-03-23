@@ -20,6 +20,7 @@ class EmptyViewFragment : BaseFragment() {
 
     private var adapter: MonthsAdapter? = null
 
+    private var headerFooterState = false
     override val months: MutableList<MonthItem>
         get() {
             return mutableListOf(Month("JAN", R.drawable.january),
@@ -78,6 +79,8 @@ class EmptyViewFragment : BaseFragment() {
                 .setSwipeEnabled(true)
                 .setSwipeFlags(ItemTouchHelper.LEFT)
                 .setLongPressDragEnabled(true)
+                .setHeaderEnabled(headerFooterState)
+                .setFooterEnabled(headerFooterState)
                 .build()
     }
 
@@ -100,6 +103,16 @@ class EmptyViewFragment : BaseFragment() {
                 diffMonths.shuffle()
                 adapter?.setData(diffMonths, MonthDiffCallback(adapter!!.data, diffMonths))
                 recyclerView.scrollToPosition(0)
+            }
+            R.id.add -> {
+                val months = months
+                val month = (Math.random() * months.size).toInt()
+                adapter?.add(months[month])
+            }
+            R.id.toggle_hf -> {
+                headerFooterState = !headerFooterState
+                adapter?.setHeaderEnabled(headerFooterState)
+                adapter?.setFooterEnabled(headerFooterState)
             }
         }
         return super.onOptionsItemSelected(item)
