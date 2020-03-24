@@ -20,6 +20,7 @@ This library provides swipe & drag and drop support for RecyclerView. Based on g
 * support for different layout managers
 * predefined drag & swipe flags for RecyclerView's layout managers
 * DiffUtil feature
+* header/footer
 
 # Dependency
 
@@ -179,13 +180,51 @@ adapter.undoLast()
 adapter.setUndoSize(2)
 ```
 
+### Header/Footer:
+```kotlin
+// Enabled, disable header/footer by builder
+GestureManager.Builder(recyclerView)
+    .setHeaderEnabled(state)
+    .setFooterEnabled(state)
+
+// or directly by adapter
+adaper.setHeaderEnabled(state)
+adaper.setHeaderEnabled(state)
+
+// if header or footer is enabled then library will pass viewType (TYPE_HEADER_ITEM, TYPE_FOOTER_ITEM)
+// to onCreateViewHolder(parent: ViewGroup, viewType: Int)
+override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GestureViewHolder<T> {
+    return when (viewType) {
+            TYPE_HEADER_ITEM -> {
+                // return header view holder
+            }
+            TYPE_FOOTER_ITEM -> {
+                // return footer view holder
+            }
+            else -> {
+                // return regular view holder
+            }
+        }
+}
+
+// if getItemViewType(viewPosition: Int) is used in your adapter then
+// firstly call super.getItemViewType() and check if library wants to handle incoming view type
+override fun getItemViewType(viewPosition: Int): Int {
+    val handledType = super.getItemViewType(viewPosition)
+    if (handledType > 0) {
+        // library wants to handle this case, simply return
+        return handledType
+    }
+    return yourTypes
+}
+```
+
 # Help
 See examples.
 
 # To do
 * examples with data binding
 * tests
-* header/footer
 * different layouts for different swipe directions
 * proguard?
 
