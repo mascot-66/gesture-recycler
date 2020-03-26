@@ -28,7 +28,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    implementation 'com.thesurix.gesturerecycler:gesture-recycler:1.10.0'
+    implementation 'com.thesurix.gesturerecycler:gesture-recycler:1.11.0'
 }
 ```
 
