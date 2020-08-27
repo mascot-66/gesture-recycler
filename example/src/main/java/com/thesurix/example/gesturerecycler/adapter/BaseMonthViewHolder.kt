@@ -19,16 +19,12 @@ abstract class BaseMonthViewHolder(rootView: View) : GestureViewHolder<MonthItem
     protected abstract val monthPicture: ImageView
     protected abstract val itemDrag: ImageView
     protected abstract val foreground: View?
-    protected abstract val background: ViewStub?
 
     override val draggableView: View?
         get() = itemDrag
 
     override val foregroundView: View
         get() = foreground ?: super.foregroundView
-
-    override val backgroundView: View?
-        get() = background
 
     override fun bind(item: MonthItem) {
         if (item is Month) {
@@ -89,5 +85,4 @@ abstract class BaseMonthViewHolder(rootView: View) : GestureViewHolder<MonthItem
     private fun getTextAnimatorListener(view: TextView, animator: ValueAnimator): ValueAnimator.AnimatorUpdateListener {
         return ValueAnimator.AnimatorUpdateListener { view.setTextColor(animator.animatedValue as Int) }
     }
-
 }

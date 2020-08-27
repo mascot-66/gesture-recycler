@@ -14,12 +14,19 @@
 
         <FrameLayout android:layout_width="match_parent" android:layout_height="@dimen/linear_item_height">
 
-            <ViewStub
-                android:id="@+id/month_background_stub"
-                android:inflatedId="@+id/month_delete_view"
-                android:layout="@layout/remove_item"
+            <include
+                android:id="@+id/month_background_one"
+                layout="@layout/first_background_item"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/month_background_two"
+                layout="@layout/second_background_item"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/foreground"

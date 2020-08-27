@@ -15,6 +15,4 @@ class LinearItemViewHolder (private val binding: LinearItemBinding) : BaseMonthV
         get() = binding.monthDrag
     override val foreground: View?
         get() = null
-    override val background: ViewStub?
-        get() = null
 }

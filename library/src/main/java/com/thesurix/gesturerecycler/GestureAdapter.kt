@@ -81,8 +81,9 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
          * Called when item has been removed by swipe gesture.
          * @param item removed item
          * @param position removed position
+         * @param direction the direction to which the ViewHolder is swiped. See [androidx.recyclerview.widget.ItemTouchHelper]
          */
-        fun onItemRemoved(item: T, position: Int)
+        fun onItemRemoved(item: T, position: Int, direction: Int)
 
         /**
          * Called when item has been reordered by drag gesture.
@@ -377,13 +378,14 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
     /**
      * Dismisses item from the given position.
      * @param viewPosition dismissed item position
+     * @param direction the direction to which the ViewHolder is swiped
      */
-    internal fun onItemDismissed(viewPosition: Int) {
+    internal fun onItemDismissed(viewPosition: Int, direction: Int) {
         val dataRemovePosition = viewPosition + getDataOffset(headerEnabled)
         val removedItem = _data[dataRemovePosition]
         val wasRemoved = remove(dataRemovePosition)
         if (wasRemoved) {
-            dataChangeListener?.onItemRemoved(removedItem, dataRemovePosition)
+            dataChangeListener?.onItemRemoved(removedItem, dataRemovePosition, direction)
         }
     }
 

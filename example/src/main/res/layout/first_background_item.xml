@@ -7,7 +7,6 @@
     android:background="@color/red_500">
 
     <ImageView
-        android:id="@+id/remove_del_view"
         android:layout_width="@dimen/remove_item_icon_size"
         android:layout_height="@dimen/remove_item_icon_size"
         android:layout_alignParentRight="true"

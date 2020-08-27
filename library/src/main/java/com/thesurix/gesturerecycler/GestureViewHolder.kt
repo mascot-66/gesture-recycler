@@ -68,6 +68,10 @@ abstract class GestureViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(it
      */
     open fun onItemClear() {}
 
+    open fun getBackgroundView(direction: Int): View? {
+        return backgroundView
+    }
+
     /**
      * Returns information if we can drag this view.
      * @return true if draggable, false otherwise

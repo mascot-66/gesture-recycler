@@ -52,8 +52,8 @@ class LinearRecyclerFragment : BaseFragment() {
                 .build()
 
         adapter.setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
-            override fun onItemRemoved(item: MonthItem, position: Int) {
-                Snackbar.make(view, "Month removed from position $position", Snackbar.LENGTH_SHORT).show()
+            override fun onItemRemoved(item: MonthItem, position: Int, direction: Int) {
+                Snackbar.make(view, "Month removed from position $position ", Snackbar.LENGTH_SHORT).show()
             }
 
             override fun onItemReorder(item: MonthItem, fromPos: Int, toPos: Int) {

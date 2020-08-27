@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.thesurix.example.gesturerecycler.R
 import com.thesurix.example.gesturerecycler.adapter.MonthsAdapter
@@ -47,7 +48,7 @@ class EmptyViewFragment : BaseFragment() {
             data = months
             setUndoSize(2)
             setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
-                override fun onItemRemoved(item: MonthItem, position: Int) {
+                override fun onItemRemoved(item: MonthItem, position: Int, direction: Int) {
                     val undoSnack = Snackbar.make(view, "Month removed from position $position", Snackbar.LENGTH_SHORT)
                     undoSnack.setAction(R.string.undo_text) { adapter?.undoLast() }
                     undoSnack.show()
@@ -77,7 +78,7 @@ class EmptyViewFragment : BaseFragment() {
 
         gestureManager = GestureManager.Builder(recyclerView)
                 .setSwipeEnabled(true)
-                .setSwipeFlags(ItemTouchHelper.LEFT)
+                .setSwipeFlags(ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
                 .setLongPressDragEnabled(true)
                 .setHeaderEnabled(headerFooterState)
                 .setFooterEnabled(headerFooterState)

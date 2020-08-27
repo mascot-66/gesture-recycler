@@ -15,6 +15,4 @@ class GridItemViewHolder (private val binding: GridItemBinding) : BaseMonthViewH
         get() = binding.monthDrag
     override val foreground: View?
         get() = null
-    override val background: ViewStub?
-        get() = null
 }

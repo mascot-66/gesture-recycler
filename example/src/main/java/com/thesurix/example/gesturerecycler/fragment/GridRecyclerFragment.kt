@@ -55,7 +55,7 @@ class GridRecyclerFragment : BaseFragment() {
                 .build()
 
         adapter.setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
-            override fun onItemRemoved(item: MonthItem, position: Int) {
+            override fun onItemRemoved(item: MonthItem, position: Int, direction: Int) {
                 Snackbar.make(view, "Month removed from position $position", Snackbar.LENGTH_SHORT).show()
             }
 
