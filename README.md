@@ -11,7 +11,7 @@ This library provides swipe & drag and drop support for RecyclerView. Based on g
 
 # Features
 * item click/long press/double tap listener
-* background view for swipeable items
+* background views for swipeable items
 * empty view
 * undo
 * swipe 
