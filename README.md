@@ -93,6 +93,50 @@ val gestureManager = GestureManager.Builder(recyclerView)
     open val backgroundView: View?
             get() = background
 ```
+### Different background views:
+```xml
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Content of the background views -->
+    <include
+            android:id="@+id/month_background_one"
+            layout="@layout/first_background_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+    <include
+            android:id="@+id/month_background_two"
+            layout="@layout/second_background_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    
+    <LinearLayout
+            android:id="@+id/foreground_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <!-- Content of the top view -->
+    </LinearLayout>
+</FrameLayout>
+```
+```kotlin
+    // Override foregroundView variable and getBackgroundView(direction: Int) method in ViewHolder to provide top and bottom views
+    open val foregroundView: View
+            get() = foregound
+            
+    override fun getBackgroundView(direction: Int): View? {
+            //direction can be ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT, ItemTouchHelper.UP, ItemTouchHelper.DOWN
+            if (direction == ItemTouchHelper.RIGHT) {
+                return firstBackgroundView
+            }
+            return secondBackgroundView
+    }
+```
 ### Data callbacks:
 ```kotlin
 adapter.setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
