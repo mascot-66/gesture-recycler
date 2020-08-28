@@ -28,7 +28,7 @@ To use this library in your android project, just simply add the following depen
 
 ```sh
 dependencies {
-    implementation 'com.thesurix.gesturerecycler:gesture-recycler:1.12.0'
+    implementation 'com.thesurix.gesturerecycler:gesture-recycler:1.13.0'
 }
 ```
 
@@ -88,7 +88,7 @@ val gestureManager = GestureManager.Builder(recyclerView)
 ```kotlin
     // Override foregroundView, backgroundView() variables in ViewHolder to provide top and bottom view
     open val foregroundView: View
-            get() = foregound
+            get() = foreground
             
     open val backgroundView: View?
             get() = background
@@ -127,7 +127,7 @@ val gestureManager = GestureManager.Builder(recyclerView)
 ```kotlin
     // Override foregroundView variable and getBackgroundView(direction: Int) method in ViewHolder to provide top and bottom views
     open val foregroundView: View
-            get() = foregound
+            get() = foreground
             
     override fun getBackgroundView(direction: Int): View? {
             //direction can be ItemTouchHelper.LEFT, ItemTouchHelper.RIGHT, ItemTouchHelper.UP, ItemTouchHelper.DOWN
@@ -140,7 +140,7 @@ val gestureManager = GestureManager.Builder(recyclerView)
 ### Data callbacks:
 ```kotlin
 adapter.setDataChangeListener(object : GestureAdapter.OnDataChangeListener<MonthItem> {
-                        override fun onItemRemoved(item: MonthItem, position: Int) {
+                        override fun onItemRemoved(item: MonthItem, position: Int, direction: Int) {
                         }
         
                         override fun onItemReorder(item: MonthItem, fromPos: Int, toPos: Int) {
