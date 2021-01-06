@@ -28,12 +28,12 @@ ext {
 }
 
 android {
-    compileSdkVersion compileSdk
+    compileSdkVersion project.getProperty("compileSdk") as Integer
     buildToolsVersion buildTools
 
     defaultConfig {
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
+        minSdkVersion project.getProperty("minSdk") as Integer
+        targetSdkVersion project.getProperty("targetSdk") as Integer
         versionCode 1
         versionName version
     }

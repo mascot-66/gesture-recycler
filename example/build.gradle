@@ -3,13 +3,13 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion compileSdk
+    compileSdkVersion 30
     buildToolsVersion buildTools
 
     defaultConfig {
         applicationId "com.thesurix.example.gesturerecycler"
-        minSdkVersion minSdk
-        targetSdkVersion targetSdk
+        minSdkVersion project.getProperty("minSdk") as Integer
+        targetSdkVersion project.getProperty("targetSdk") as Integer
         versionCode 1
         versionName "1.0"
     }
