@@ -1,4 +1,3 @@
-[ ![Download](https://api.bintray.com/packages/thesurix/maven/gesture-recycler/images/download.svg) ](https://bintray.com/thesurix/maven/gesture-recycler/_latestVersion)
 <a href="https://opensource.org/licenses/Apache-2.0" target="_blank"><img src="https://img.shields.io/badge/License-Apache_v2.0-blue.svg?style=flat"/></a> 
 [![API](https://img.shields.io/badge/API-15%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=15)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-gesture--recycler-green.svg?style=true)](https://android-arsenal.com/details/1/3317)
@@ -27,8 +26,12 @@ This library provides swipe & drag and drop support for RecyclerView. Based on g
 To use this library in your android project, just simply add the following dependency into your build.gradle
 
 ```sh
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    implementation 'com.thesurix.gesturerecycler:gesture-recycler:1.13.0'
+    implementation "com.github.thesurix:gesture-recycler:1.14.0"
 }
 ```
 
