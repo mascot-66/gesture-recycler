@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.thesurix:gesture-recycler:1.15.0"
+    implementation "com.github.thesurix:gesture-recycler:1.16.0"
 }
 ```
 
