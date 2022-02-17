@@ -406,8 +406,9 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
      */
     internal fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
         if (!isItemMoveAllowed(fromPosition, toPosition)) {
-            return false;
+            return false
         }
+
         val viewType = getItemViewType(toPosition)
         if (viewType == TYPE_HEADER_ITEM || viewType == TYPE_FOOTER_ITEM) {
             return false
