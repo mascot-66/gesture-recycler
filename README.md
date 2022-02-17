@@ -31,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.thesurix:gesture-recycler:1.16.0"
+    implementation "com.github.thesurix:gesture-recycler:1.17.0"
 }
 ```
 
@@ -277,7 +277,7 @@ See examples.
 # Licence
 
 ```
-Copyright 2021 thesurix
+Copyright 2022 thesurix
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 
 ext {
     PUBLISH_GROUP_ID = 'com.github.thesurix'
-    PUBLISH_VERSION = '1.16.0'
+    PUBLISH_VERSION = '1.17.0'
     PUBLISH_ARTIFACT_ID = 'gesture-recycler'
 }
 
