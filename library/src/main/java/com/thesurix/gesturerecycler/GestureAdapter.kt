@@ -368,6 +368,15 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
     }
 
     /**
+     * Defines if move to position toPosition is allowed. E.g. it can restrict moves within group
+     * or deny move over some element that cannot be declared neither header nor footer.
+     * @param fromPosition view start position
+     * @param toPosition view end position
+     * @return returns true if transition is allowed
+     */
+    open fun isItemMoveAllowed(fromPosition: Int, toPosition: Int): Boolean = true
+
+    /**
      * Sets adapter gesture listener.
      * @param listener gesture listener
      */
@@ -396,6 +405,9 @@ abstract class GestureAdapter<T, K : GestureViewHolder<T>> : RecyclerView.Adapte
      * @return returns true if transition is successful
      */
     internal fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        if (!isItemMoveAllowed(fromPosition, toPosition)) {
+            return false;
+        }
         val viewType = getItemViewType(toPosition)
         if (viewType == TYPE_HEADER_ITEM || viewType == TYPE_FOOTER_ITEM) {
             return false
